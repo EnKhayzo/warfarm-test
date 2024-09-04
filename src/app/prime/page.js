@@ -559,7 +559,7 @@ const MissionTab = ({ groupBy, hideFarmed, trackedItems, rarityPriorities=null }
                                                                 className={`sized-content h-flex flex-center object-page-mission-relic${` ${com.getComponentRarityInRelationToRelic(component.rawObj, relic.relic)}` ?? ''}`} 
                                                                 style={{ gap: '5px', minWidth: '200px' }}
                                                             >
-                                                                <div className='sized-content h-flex flex-center' ><img style={{ height: '30px' }} src={`/warfarm/images/${relic.relic.tier}.png`}/></div>
+                                                                <div className='sized-content h-flex flex-center' ><img style={{ height: '30px' }} src={`/warfarm-test/images/${relic.relic.tier}.png`}/></div>
                                                                 <div className='sized-content h-flex flex-center' style={{ fontSize: 'small' }}>{relic.relic.name}</div>
                                                                 <div className='sized-content v-flex flex-center' style={{ alignItems: 'flex-start', marginLeft: '5px' }}>
                                                                     {
@@ -852,7 +852,7 @@ export function TrackedItemsComponent(){
                 </div>
               <div className='sized-content v-flex'>
                 <div>You&apos;re not tracking any items. Add some by using the Search Bar or from the <Link href='/prime/explorer' style={{ cursor: 'pointer', color:'var(--color-link-text)' }}>Explorer</Link> page, or by selecting a Track List (if you saved any).</div>
-                <div className='sized-content h-flex flex-center'>Track items using the star<img className='sized-content star-button-icon h-flex flex-center' style={{ height: '12px',  }} src="/warfarm/icons/star_hollow.svg"/>button.</div>
+                <div className='sized-content h-flex flex-center'>Track items using the star<img className='sized-content star-button-icon h-flex flex-center' style={{ height: '12px',  }} src="/warfarm-test/icons/star_hollow.svg"/>button.</div>
               </div>
             </div> 
           : 
@@ -891,7 +891,7 @@ export default function Home() {
       {
         !noTrackedItems ? null :
         <div className='sized-content h-flex flex-center' style={{ padding: '10px' }}>
-          <img className='sized-content h-flex flex-center' style={{ width: '400px' }} src={`/warfarm/icons/logo_prime.svg`}/>
+          <img className='sized-content h-flex flex-center' style={{ width: '400px' }} src={`/warfarm-test/icons/logo_prime.svg`}/>
         </div>
       }
       <div className='sized-remaining v-flex flex-center' style={{ gap: '20px' }}>

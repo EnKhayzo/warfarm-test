@@ -28,7 +28,7 @@ export default function TrackItemButton({ positionAbsolute=true, itemId }){
                 }}
             >
                 <img 
-                    src={ isTracked ? `/warfarm/icons/star_hollow_filled.svg` : `/warfarm/icons/star_hollow.svg`} 
+                    src={ isTracked ? `/warfarm-test/icons/star_hollow_filled.svg` : `/warfarm-test/icons/star_hollow.svg`} 
                     className={`sized-content star-button-icon flex-center${ isTracked ? ` tracked` : `` }`}
                     style={{
 

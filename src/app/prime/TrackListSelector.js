@@ -95,7 +95,7 @@ export default function TrackListSelector({}){
                     onClick={(ev) => { if(sharedTrackList) return; setMenuOpen(!menuOpen); }}
                 >
                     <div className='sized-content h-flex flex-center' style={{ marginBottom: '2px' }}>{ sharedTrackList ? sharedTrackList.id : currentTrackList ?? '?'}</div>
-                    <div className='sized-content h-flex flex-center'><img className='sized-content h-flex icon-default-filter flex-center' src='/warfarm/icons/arrow.svg' style={{ width: '10px', transform: 'rotate(90deg)' }}/></div>
+                    <div className='sized-content h-flex flex-center'><img className='sized-content h-flex icon-default-filter flex-center' src='/warfarm-test/icons/arrow.svg' style={{ width: '10px', transform: 'rotate(90deg)' }}/></div>
                     {
                         !menuOpen ? null:
                         <div 
@@ -192,7 +192,7 @@ export default function TrackListSelector({}){
                             <IconButton 
                                 blinkEnabled={false}
                                 label={''} 
-                                iconUrl={'/warfarm/icons/save.svg'} 
+                                iconUrl={'/warfarm-test/icons/save.svg'} 
                                 iconClassName={'icon-default-filter track-list-icon'}
                                 onClick={() => {
                                     console.log(`save!`, currentTrackList);
@@ -235,7 +235,7 @@ export default function TrackListSelector({}){
                             <IconButton 
                                 blinkEnabled={false}
                                 label={''} 
-                                iconUrl={'/warfarm/icons/failure.svg'} 
+                                iconUrl={'/warfarm-test/icons/failure.svg'} 
                                 iconClassName={'icon-default-filter track-list-icon'}
                                 onClick={() => {
                                     router.push(window.location.href.split('?')[0]);
@@ -247,7 +247,7 @@ export default function TrackListSelector({}){
                             <IconButton 
                                 blinkEnabled={false}
                                 label={''} 
-                                iconUrl={'/warfarm/icons/edit.svg'} 
+                                iconUrl={'/warfarm-test/icons/edit.svg'} 
                                 iconClassName={'icon-default-filter track-list-icon'}
                                 onClick={() => {
                                     console.log(`edit!`, currentTrackList);
@@ -287,7 +287,7 @@ export default function TrackListSelector({}){
                             <IconButton 
                                 blinkEnabled={false}
                                 label={''} 
-                                iconUrl={'/warfarm/icons/add.svg'} 
+                                iconUrl={'/warfarm-test/icons/add.svg'} 
                                 iconClassName={'icon-default-filter track-list-icon'}
                                 onClick={() => {
                                     console.log(`add!`);
@@ -301,7 +301,7 @@ export default function TrackListSelector({}){
                                     <IconButton 
                                         blinkEnabled={false}
                                         label={''} 
-                                        iconUrl={'/warfarm/icons/trash-bin.svg'} 
+                                        iconUrl={'/warfarm-test/icons/trash-bin.svg'} 
                                         iconClassName={'icon-default-filter track-list-icon'}
                                         onClick={() => {
                                             console.log(`delete!`, currentTrackList);
@@ -316,7 +316,7 @@ export default function TrackListSelector({}){
                             <IconButton 
                                 blinkEnabled={false}
                                 label={''} 
-                                iconUrl={'/warfarm/icons/share.svg'} 
+                                iconUrl={'/warfarm-test/icons/share.svg'} 
                                 iconClassName={'icon-default-filter track-list-icon'}
                                 onClick={() => {
                                     let trackListToShare = com.cloneDict(trackLists[currentTrackList]);

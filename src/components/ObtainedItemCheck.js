@@ -55,7 +55,7 @@ export default function ObtainedItemCheck({ positionAbsolute=true, hollowAbsolut
                         :null
                     }
                     <img 
-                        src={isObtainedPerc < 1 ? `/warfarm/icons/success_hollow.svg` : `/warfarm/icons/success.svg`} 
+                        src={isObtainedPerc < 1 ? `/warfarm-test/icons/success_hollow.svg` : `/warfarm-test/icons/success.svg`} 
                         className={`sized-content icon-default-filter flex-center obtained-check-hollow`}
                         onClick={(ev) => { 
                             ev.preventDefault(); 
@@ -80,10 +80,10 @@ export default function ObtainedItemCheck({ positionAbsolute=true, hollowAbsolut
                         <img 
                             src={
                                 isObtainedPerc <= 0 ? 
-                                    `/warfarm/icons/success_hollow.svg` 
+                                    `/warfarm-test/icons/success_hollow.svg` 
                                 : isObtainedPerc < 1 ? 
-                                    `/warfarm/icons/square.svg` 
-                                :   `/warfarm/icons/success.svg`
+                                    `/warfarm-test/icons/square.svg` 
+                                :   `/warfarm-test/icons/success.svg`
                             } 
                             className={`sized-content obtained-check-icon${ isObtainedPerc < 1 ? ` icon-partial-filter` : `` } flex-center${ isObtainedPerc <= 0 ? ` obtained-check-hollow` : ``}`}
                             style={{

@@ -51,9 +51,9 @@ function NavBarMainButtons({ forceHomeBlink }){
 
   return (
     <>
-      <Link href="/prime"><IconButton label={'Home'}      iconUrl={`/warfarm/icons/home.svg`}     highlight={pathName === "/prime"}          forceBlinking={forceHomeBlink}  className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
-      <Link href="/prime/explorer"><IconButton label={'Explorer'}  iconUrl={`/warfarm/icons/explorer.svg`} highlight={pathName === "/prime/explorer"} forceBlinking={null}         className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
-      <Link href="/prime/about"><IconButton label={'About'}     iconUrl={`/warfarm/icons/question.svg`} highlight={pathName === "/prime/about"}    forceBlinking={null}            className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
+      <Link href="/prime"><IconButton label={'Home'}      iconUrl={`/warfarm-test/icons/home.svg`}     highlight={pathName === "/prime"}          forceBlinking={forceHomeBlink}  className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
+      <Link href="/prime/explorer"><IconButton label={'Explorer'}  iconUrl={`/warfarm-test/icons/explorer.svg`} highlight={pathName === "/prime/explorer"} forceBlinking={null}         className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
+      <Link href="/prime/about"><IconButton label={'About'}     iconUrl={`/warfarm-test/icons/question.svg`} highlight={pathName === "/prime/about"}    forceBlinking={null}            className={'layout-header-button'} iconClassName={'layout-header-icon'} /></Link>
     </>
   );
 }
@@ -66,7 +66,7 @@ function NavBarSideButtons({}){
       <Link href="/prime/upcoming">
         <IconButton 
           label={'Upcoming'} 
-          iconUrl={`/warfarm/icons/news.svg`} 
+          iconUrl={`/warfarm-test/icons/news.svg`} 
           highlight={pathName === "/prime/upcoming"} 
           className={'layout-header-button'} 
           iconClassName={'layout-header-icon'}
@@ -82,8 +82,8 @@ function MediaQueryCollapseContextMenuButton({children}){
       className='nav-header-buttons-small-mediaquery-container'
       style={{
       }}
-      iconUrl={`/warfarm/icons/info.svg`}
-      headerContent={<img src="/warfarm/icons/more.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
+      iconUrl={`/warfarm-test/icons/info.svg`}
+      headerContent={<img src="/warfarm-test/icons/more.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
     >
       {
         (props) => (
@@ -237,7 +237,7 @@ export function MainLayoutComponent({children}){
             searchExpanded ?
               <div className="sized-content h-flex flex-center search-expanded">
                 <button onClick={handleSearchCollapse} className="sized-content h-flex back-button">
-                  <img className="sized-content icon-default-filter h-flex" src={`/warfarm/icons/arrow.svg`} style={{ marginLeft: '20px', height: '20px', transform: 'rotate(180deg)' }} alt="Back" />
+                  <img className="sized-content icon-default-filter h-flex" src={`/warfarm-test/icons/arrow.svg`} style={{ marginLeft: '20px', height: '20px', transform: 'rotate(180deg)' }} alt="Back" />
                 </button>
                 <SearchBar isExpanded={true} />
               </div>
@@ -259,7 +259,7 @@ export function MainLayoutComponent({children}){
                     }} 
                     className='sized-content logo-button h-flex flex-center'
                   >
-                      <Link href="/prime"><img style={{ minWidth: '70px' }} className='sized-content logo h-flex flex-center' src={`/warfarm/icons/logo_prime.svg`}/></Link>
+                      <Link href="/prime"><img style={{ minWidth: '70px' }} className='sized-content logo h-flex flex-center' src={`/warfarm-test/icons/logo_prime.svg`}/></Link>
                   </button>
                 </div>
                 <MediaQueryCollapseContextMenuButton>
@@ -271,7 +271,7 @@ export function MainLayoutComponent({children}){
               </div>
               <div className="sized-remaining h-flex flex-center">
                 <button className="sized-content h-flex search-button" onClick={handleSearchExpand}>
-                  <img style={{ height: '30px' }} className="sized-content h-flex icon-default-filter" src={`/warfarm/icons/search.svg`} alt="Search" />
+                  <img style={{ height: '30px' }} className="sized-content h-flex icon-default-filter" src={`/warfarm-test/icons/search.svg`} alt="Search" />
                 </button>
                 <div 
                   className="sized-remaining h-flex flex-center global-search-bar-area"
@@ -283,7 +283,7 @@ export function MainLayoutComponent({children}){
                 </div>
               </div>
               <div className="sized-content h-flex flex-center" style={{ gap:'20px', justifyContent: 'flex-end' }}>
-                <Link href="/prime/supportme"><IconButton label={'Support Me'} iconUrl={`/warfarm/icons/heart.svg`} className={'layout-header-button support-me-button'} iconClassName={'support-me-icon'} iconHeight='20px' /></Link>
+                <Link href="/prime/supportme"><IconButton label={'Support Me'} iconUrl={`/warfarm-test/icons/heart.svg`} className={'layout-header-button support-me-button'} iconClassName={'support-me-icon'} iconHeight='20px' /></Link>
                 <div className="sized-content h-flex flex-center">
                   <MediaQueryCollapseContextMenuButton>
                     <NavBarSideButtons/>
@@ -294,8 +294,8 @@ export function MainLayoutComponent({children}){
                 </div>
                 <div className='sized-content h-flex' style={{ gap: '20px', justifyContent: 'center', alignItems: 'center' }}>
                   {/* <ContextMenuButton 
-                    iconUrl={`/warfarm/icons/info.svg`}
-                    headerContent={<img src="/warfarm/icons/info.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
+                    iconUrl={`/warfarm-test/icons/info.svg`}
+                    headerContent={<img src="/warfarm-test/icons/info.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
                   >
                     {
                       (props) => (
@@ -319,7 +319,7 @@ export function MainLayoutComponent({children}){
                       });
                     }}
                   >
-                    <div className='sized-content h-flex'><img className='sized-content h-flex icon-default-filter nav-bar-standard-icon' src='/warfarm/icons/info.svg'/></div>
+                    <div className='sized-content h-flex'><img className='sized-content h-flex icon-default-filter nav-bar-standard-icon' src='/warfarm-test/icons/info.svg'/></div>
                     {
                       !hasFirstAccessed ? null:
                       <div 
@@ -334,7 +334,7 @@ export function MainLayoutComponent({children}){
                     top='50px' 
                     style={{ right: '0px' }}
                     className='global-settings-button'
-                    headerContent={<img src="/warfarm/icons/settings.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
+                    headerContent={<img src="/warfarm-test/icons/settings.svg" style={{ minWidth: '10px', filter: 'invert()', height: '20px', opacity: '70%' }}/>}
                   >
                     {
                       (props) => (
@@ -356,7 +356,7 @@ export function MainLayoutComponent({children}){
                                       }}
                                       elems={Object.keys(com.getDefaultMissionTypePriorities()).map(priority => (
                                           <div key={`${priority}`} className='sized-content h-flex flex-center' style={{ gap: '5px', cursor: 'pointer' }}>
-                                              <div className='sized-content h-flex flex-center'><img style={{ filter: 'invert()', width: '5px', height: '5px' }} src='/warfarm/icons/move.svg'/></div>
+                                              <div className='sized-content h-flex flex-center'><img style={{ filter: 'invert()', width: '5px', height: '5px' }} src='/warfarm-test/icons/move.svg'/></div>
                                               <div className='sized-content h-flex flex-center'>{priority}</div>
                                           </div>
                                       ))}
@@ -527,17 +527,17 @@ export function MainLayoutComponent({children}){
                 <div className='sized-content h-flex flex-center' >
                   {
                     notificationUi.type === "success" ? 
-                      <img className="icon-success-filter" style={{ width: '20px', height: '20px' }} src="/warfarm/icons/success.svg"/>
+                      <img className="icon-success-filter" style={{ width: '20px', height: '20px' }} src="/warfarm-test/icons/success.svg"/>
                       :
                     notificationUi.type === "failure" ? 
-                      <img className="icon-success-filter" src="/warfarm/icons/failure.svg"/>
+                      <img className="icon-success-filter" src="/warfarm-test/icons/failure.svg"/>
                     :null
                   }
                 </div>
                 <div className='sized-content h-flex flex-center' >{notificationUi.label}</div>
                 <div className='sized-content h-flex flex-center' >
                   <IconButton
-                    iconUrl={'/warfarm/icons/failure.svg'}
+                    iconUrl={'/warfarm-test/icons/failure.svg'}
                     iconClassName={'icon-default-filter'}
                     iconStyle={{ width: '10px', height: '10px' }}
                     onClick={() => com.removeNotificationUi(notificationUi)}
@@ -584,7 +584,7 @@ export default function RootLayout({ children }) {
       fallback={
         <div className="sized-remaining v-flex flex-center" style={{ gap: '10vh' }}>
           {/* <FallbackObject/> */}
-          <img style={{ height: '30vh' }} src='/warfarm/icons/logo_prime.svg'/>
+          <img style={{ height: '30vh' }} src='/warfarm-test/icons/logo_prime.svg'/>
           <div 
             className='sized-content v-flex flex-center' 
             style={{ 

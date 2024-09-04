@@ -62,7 +62,7 @@ export default function TabHeaderButtonsComponent({ tabs, activeTab, changeTab, 
                 <div className='sized-content h-flex flex-center'>
                     <ContextMenuButton 
                         className='sized-content h-flex tab-component-header-control-button'
-                        headerContent={<img className='sized-content h-flex flex-center icon-default-filter' style={{ width: '20px', height: '20px' }} src="/warfarm/icons/more.svg"/>}
+                        headerContent={<img className='sized-content h-flex flex-center icon-default-filter' style={{ width: '20px', height: '20px' }} src="/warfarm-test/icons/more.svg"/>}
                     >
                        {
                         (props) => (headerControls[activeTab])

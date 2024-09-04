@@ -35,13 +35,13 @@ const ConfirmButton = ({ top, buttons, headerContent, className, style, onConfir
                         onClick={(ev) => { if(onConfirm != null) onConfirm(ev); toggleConfirmArea(); }} 
                         className={`confirm-button${ className ? ` ${className}` : `` }`}
                     >
-                        <img className='icon-default-filter confirm-icon' src="/warfarm/icons/success.svg"/>
+                        <img className='icon-default-filter confirm-icon' src="/warfarm-test/icons/success.svg"/>
                     </button>
                     <button 
                         onClick={() => { toggleConfirmArea(); }} 
                         className={`confirm-button${ className ? ` ${className}` : `` }`}
                     >
-                        <img className='icon-default-filter confirm-icon' src="/warfarm/icons/failure.svg"/>
+                        <img className='icon-default-filter confirm-icon' src="/warfarm-test/icons/failure.svg"/>
                     </button>
                 </div>
         }

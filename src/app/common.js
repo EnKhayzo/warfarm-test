@@ -1492,10 +1492,10 @@ export function getObjectIcon(rawObj, category=null){
 
   category = capitalizeFirstLetter(category);
 
-  return category.localeCompare("Items") == 0 ? `/warfarm/images/${rawObj.name}.png` :
-      category.localeCompare("Components") == 0 ? `/warfarm/images/${rawObj.fullName}.png` :
-      category.localeCompare("Relics") == 0 ? `/warfarm/images/${rawObj.tier}.png` :
-      category.localeCompare("Missions") == 0 ? `/warfarm/images/${ rawObj.planet.includes("Event: ") ? rawObj.planet.replace("Event: ","") : rawObj.planet}.png` : null
+  return category.localeCompare("Items") == 0 ? `/warfarm-test/images/${rawObj.name}.png` :
+      category.localeCompare("Components") == 0 ? `/warfarm-test/images/${rawObj.fullName}.png` :
+      category.localeCompare("Relics") == 0 ? `/warfarm-test/images/${rawObj.tier}.png` :
+      category.localeCompare("Missions") == 0 ? `/warfarm-test/images/${ rawObj.planet.includes("Event: ") ? rawObj.planet.replace("Event: ","") : rawObj.planet}.png` : null
 }
 
 export function getObjectPathObjFromRouteId(routeId){

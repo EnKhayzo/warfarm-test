@@ -17,7 +17,7 @@ export default function ResurgenceItemIcon({ positionAbsolute=true, itemId, obta
             >
                 <img 
                     style={{ opacity: '100%' }}
-                    src={`/warfarm/icons/resurgence.svg`} 
+                    src={`/warfarm-test/icons/resurgence.svg`} 
                     className={`sized-content resurgence-check-icon flex-center`}
                 />
             </div>

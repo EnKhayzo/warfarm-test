@@ -84,23 +84,6 @@ export function editSetting(name, func){
     saveSetting(name, setting);
 }
 
-export function setAllUserData(userData){
-  saveUserData(userData);
-  obtainedObservable.set(userData.componentsObtained ?? {});
-  trackedItemsOvervable.set(userData.trackedItems ?? {});
-  missionPrioritiesObservable.set(userData.missionPriorityPreferences ?? {});
-}
-
-export function clearAllUserData(){
-  saveUserData({});
-  obtainedObservable.set({});
-  trackedItemsOvervable.set({});
-  missionPrioritiesObservable.set({});
-
-  currentTrackListIdObservable.set(null);
-  trackListsObservable.set({});
-}
-
 export function parseVersion(versionStr){
   const splitVersion = versionStr.split(".");
   if(splitVersion.length < 3){ console.warn(`version length < 3!`); return; }
@@ -791,6 +774,7 @@ export async function initialize(local=false) {
     initialized = true;
   };
 
+
 export function refreshUserData(newUserData) {
   // console.log(`new user data!`, newUserData);
 
@@ -807,6 +791,29 @@ export function refreshUserData(newUserData) {
   trackListsObservable.set(getUserDataTrackLists());
   currentTrackListIdObservable.set(getUserDataCurrentTrackListId());
 }
+
+export function setAllUserData(userData){
+  saveUserData(userData);
+  trackedItemsOvervable.set(getUserDataTrackedItems());
+
+  obtainedObservable.set(userData.componentsObtained ?? {});
+  missionPrioritiesObservable.set(userData.missionPriorityPreferences ?? {});
+  preferencesObservable.set(userData.preferencesObservable ?? getUserDataPreferences());
+
+  trackListsObservable.set(getUserDataTrackLists());
+  currentTrackListIdObservable.set(getUserDataCurrentTrackListId());
+}
+
+export function clearAllUserData(){
+  saveUserData({});
+  obtainedObservable.set({});
+  trackedItemsOvervable.set({});
+  missionPrioritiesObservable.set({});
+
+  currentTrackListIdObservable.set(null);
+  trackListsObservable.set({});
+}
+
 
 export function getIdMap() { return idMap; }
 

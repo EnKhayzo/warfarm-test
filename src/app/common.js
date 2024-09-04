@@ -1808,7 +1808,7 @@ export function filterDict(dict, filterFunc) {
 }
 
 export function generatePageTitle(pageTitle) {
-  return `${pageTitle} | Warfarm`;
+  return `${pageTitle} | Warfarm TEST`;
 }
 
 export function getItemComponents(itemId){

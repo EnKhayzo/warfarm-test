@@ -120,7 +120,7 @@ export function MainLayoutComponent({children}){
   }, [])
 
   const exportUserData = () => {
-    com.downloadJSON({ userData: com.loadSetting("userData"), epoch: Date.now(), version: "1.0.0" }, "warfarm_userData.json");
+    com.downloadJSON({ userData: com.loadSetting("userData"), epoch: Date.now(), version: "1.0.0" }, "warfarm_userData_TEST.json");
   }
 
   const importUserData = async () => {

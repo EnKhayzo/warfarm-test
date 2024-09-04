@@ -66,7 +66,7 @@ export function loadSetting(name){
     console.error(`failed to load setting!`, name, e); 
   }
 
-  if(name === "userData" && value == null) { console.warn(`userData was null on disk! returning {}`, name, value); return {} };
+  if(name === "userData_warfarm_test" && value == null) { console.warn(`userData was null on disk! returning {}`, name, value); return {} };
 
   return value;
 }
@@ -130,7 +130,7 @@ export function loadUserData(){
   // const userData = storageData[currentUser];
   // if(userData == null) userData = {}
 
-  const userData = loadSetting("userData");
+  const userData = loadSetting("userData_warfarm_test");
   if(!userData.version) userData.version = "1.0.0";
 
   // current user data version: 1.0.1
@@ -143,7 +143,7 @@ export function loadUserData(){
 
 export function saveUserData(userData){
   if(userData == null) { console.warn(`trying to save userData as null! aborting`); return; }
-  saveSetting("userData", userData);
+  saveSetting("userData_warfarm_test", userData);
 }
 
 export function getUserDataSetting(name, defaultValue=null){

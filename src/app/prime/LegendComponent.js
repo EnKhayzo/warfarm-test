@@ -127,9 +127,9 @@ export default function LegendComponent({ closeMenu }){
           <div className="sized-content h-flex" style={{ fontSize: 'x-large', fontWeight: 'bold' }}>User Data</div>
           <div className="sized-content v-flex flex-center" style={{ textAlign: 'center', gap: '5px' }}>
             <span className="sized-content h-flex flex-center" style={{ whiteSpace: 'pre' }}>Please Export User Data often (<img className="icon-default-filter" style={{ marginTop: '3px', width: '20px', height: '20px' }} src="/warfarm-test/icons/settings.svg"/> -&gt; <button className='sized-content settings-button'>Export User Data</button>) to have backups of what you have obtained:</span>
-            <span>Warfarm doesn't use a database; everything happens locally on your machine and it isn't any different for the stored data about obtained/tracked items.</span>
-            <span className="sized-content h-flex flex-center" style={{ whiteSpace: 'pre' }}>I use the browser's localStorage system, which (AFAIK) could be cleared even by <span className='sized-content h-flex' style={{ fontWeight: 'bold' }}>deleting cookies/navigation data</span>.</span>
-            <span className="sized-content h-flex flex-center">This also has the bad side effect that the user data is not synced between devices or even different browsers. I don't know if i'll implement a more resilient system in the future (a db costs unfortunately) but i'll try mitigating the issue as much as possible.</span>
+            <span>Warfarm doesn&apos;t use a database; everything happens locally on your machine and it isn&apos;t any different for the stored data about obtained/tracked items.</span>
+            <span className="sized-content h-flex flex-center" style={{ whiteSpace: 'pre' }}>I use the browser&apos;s localStorage system, which (AFAIK) could be cleared even by <span className='sized-content h-flex' style={{ fontWeight: 'bold' }}>deleting cookies/navigation data</span>.</span>
+            <span className="sized-content h-flex flex-center">This also has the bad side effect that the user data is not synced between devices or even different browsers. I don&apos;t know if i&apos;ll implement a more resilient system in the future (a db costs unfortunately) but i&apos;ll try mitigating the issue as much as possible.</span>
           </div>
         </div>
       </div>

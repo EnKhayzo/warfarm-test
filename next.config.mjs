@@ -2,7 +2,7 @@
 const nextConfig = {
     output: 'export',
     images: { unoptimized: true },
-    basePath: '/warfarm'
+    basePath: '/warfarm-test'
 };
 
 export default nextConfig;

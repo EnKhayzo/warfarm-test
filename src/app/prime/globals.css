@@ -834,6 +834,8 @@ html * {
 .confirm-icon {
   width: 20px;
   height: 20px;
+  min-width: 10px;
+  min-height: 10px;
 }
 
 .confirm-button-area > * {

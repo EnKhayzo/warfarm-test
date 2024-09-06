@@ -1,5 +1,5 @@
 # Build for testing
-Either run 'npm run start' or invoke/click on '_start.bat', a browser tab should open on your default browser, on 'localhost:3000/warfarm'
+Either run 'npm run start' or invoke/click on '_start.bat', a browser tab should open on your default browser, on 'localhost:3000/warfarm-test'
 
 # Build for prod
 Either run 'npm run build' or invoke/click on '__build.bat', the build will be inside the 'out/' folder

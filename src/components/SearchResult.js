@@ -12,6 +12,7 @@ import TrackItemButton from './TrackItemButton';
 import ObtainedLabelButton from './ObtainedLabelButton';
 import ObtainedItemCheck from './ObtainedItemCheck';
 import ResurgenceItemIcon from './ResurgenceItemIcon';
+import useObtainedComponents from '@/hooks/useObtainedComponents';
 
 const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCallback, rawObj }) => {
   const router = useRouter();
@@ -48,6 +49,7 @@ const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCal
     const controlButtons = com.getSearchResultRelatedObjects(id, category, type, activeTab, rawObj, { missionPriorities: missionPriorities, router: router });
     return controlButtons
   };
+  const [ obtainedComponents, setObtainedComponents ] = useObtainedComponents();
 
   return (
     <div

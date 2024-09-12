@@ -23,21 +23,6 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Farm your land" />
         <link rel="shortcut icon" href={`${com.getBaseEnvPath().basePath}/favicon.ico`} />
       </Head>
-      
-      {/* <!-- Google tag (gtag.js) --> */}
-      <Script id="analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-XLCFMGGX3Q"></Script>
-      <Script id="analytics2">
-        {
-          `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-XLCFMGGX3Q');
-          `
-        }
-      </Script>
-
       <body className={`${inter.className} v-flex`} style={{ backgroundColor: '#151718' }}> {/* style is to mitigate FOUC */}
         {children}
       </body>

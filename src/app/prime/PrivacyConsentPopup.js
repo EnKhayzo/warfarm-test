@@ -34,8 +34,8 @@ export default function PrivacyConsentPopup({ onChange }){
                         }}
                     >
                         <div className="sized-content v-flex" style={{ gap: '10px', minHeight: '100px', overflow: 'auto' }}>
-                            <div>Warfarm uses <span style={{ fontWeight: 'bold' }}>Google Analytics</span> to gauge at the number of users that are using the site; this is only for curiosity on my end and to get a perspective on how many users visit it.</div>
-                            <div>I&apos;ve tried disabling as many tracking options as possible and enabled the redacting of all information except for page views, but I don&apos;t know what Google can do with the data.</div>
+                            <div>Warfarm uses <span style={{ fontWeight: 'bold' }}></span> to gauge at the number of users that are using the site; this is only for curiosity on my end and to get a perspective on how many users visit it.</div>
+                            <div>I&apos;ve tried disabling as many tracking options as possible and enabled the redacting of all information except for page views, but I don&apos;t know what  can do with the data.</div>
                             <div>If you want, you can opt out of the page view tracking by selecting the option below (you can change this later in the settings page).</div>
                         </div>
                         <div className="sized-content h-flex flex-center" style={{ gap: '10px' }}>

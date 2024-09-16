@@ -239,23 +239,13 @@ export function MainLayoutComponent({children}){
   return (
     <>
       {
-        com.getUserDataPrivacyConsentStatus() == true ?
-        <>
-          {/* <!-- Google tag (gtag.js) --> */}
-          <Script id="google-analytics" async src="https://www.googletagmanager.com/gtag/js?id=G-XLCFMGGX3Q"></Script>
-          <Script id="google-analytics2">
-            {
-              `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
+        
+        <Script 
+          strategy="lazyOnload"
+          data-domain="enkhayzo.github.io" 
+          src="https://enkhayzomachines.net/js/script.js"
+        />
 
-                gtag('config', 'G-XLCFMGGX3Q');
-              `
-            }
-          </Script>
-        </>
-        :null
       }
       <div className='sized-remaining v-flex'>
         <div className='sized-remaining main-body v-flex'>
@@ -420,19 +410,6 @@ export function MainLayoutComponent({children}){
                                   <button onClick={ev => { clearMissionPrioritiesData(ev); props.closeMenu(); }} className='sized-content settings-button settings-button-delete'>Clear Mission Priority data</button>
                                   <button onClick={ev => { clearAllUserData(ev); props.closeMenu(); }} className='sized-content settings-button settings-button-delete'>Clear All User Data</button>
                                 </div>
-                                <div className='sized-content h-flex flex-center' style={{ gap: '5px' }}>
-                                  <LabelCheckbox  
-                                    value="Items" 
-                                    textLabel={
-                                      <div className="sized-content v-flex flex-center">
-                                        <span>Consent To Page View Tracking</span>
-                                        <span style={{ fontStyle: 'italic', fontSize: 'x-small' }}>Requires page reload</span>
-                                      </div>
-                                    }
-                                    onChange={(ev) => { com.setUserDataPrivacyConsentStatus(ev.target.checked); }} 
-                                    checked={com.getUserDataPrivacyConsentStatus() ?? true}
-                                  />
-                                </div>
                               </div>
                             </div>
                           </li>
@@ -534,7 +511,6 @@ export function MainLayoutComponent({children}){
             }
           </div>
         }
-        <PrivacyConsentPopup/>
         {
           !areThereNotificationUis ? null:
           <div 

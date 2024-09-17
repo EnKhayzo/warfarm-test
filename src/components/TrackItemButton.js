@@ -6,11 +6,18 @@ import { useParams } from 'next/navigation';
 import useTrackedItems from '@/hooks/useTrackedItems.js'
 
 import * as com from "@/app/common.js"
+import useGlobalMode from '@/hooks/useGlobalMode';
 
 export default function TrackItemButton({ positionAbsolute=true, itemId }){
     const [ trackedItems, setTrackedItems ] = useTrackedItems();
+
+    const [ globalMode, setGlobalMode ] = useGlobalMode();
+    const isFarmMode = globalMode == null || globalMode === "farmMode";
     
-    const isTracked = trackedItems && trackedItems[itemId] && trackedItems[itemId].tracked;
+    const isTracked = isFarmMode ? 
+            trackedItems && trackedItems[itemId] && trackedItems[itemId].tracked 
+        : 
+            false; // TODO
 
     return (
             <button 

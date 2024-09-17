@@ -206,9 +206,9 @@ export default function ComponentPage({ routeId, pathObj }) {
   const router = useRouter();
   const [ activeTab, setActiveTab ] = useState("Relics");
 
-  useEffect(() => {
-    document.title = com.generatePageTitle(pathObj.id);
-  }, []);
+  // useEffect(() => {
+  //   document.title = com.generatePageTitle(pathObj.id);
+  // }, []);
 
   const component =  com.getObjectFromId(pathObj.id);
 
@@ -217,9 +217,6 @@ export default function ComponentPage({ routeId, pathObj }) {
   const rarityPriorities = com.getRarityPriorities();
   return (
     <div className='sized-content v-flex'>
-        <Head>
-            <title>{com.generatePageTitle(pathObj.id)}</title>
-        </Head>
         <div className='sized-remaining h-flex'>
             <div className='sized-remaining v-flex flex-center' style={{ gap: '60px' }}>
                 <div className='sized-content h-flex' style={{ marginTop: '20px' }}></div>

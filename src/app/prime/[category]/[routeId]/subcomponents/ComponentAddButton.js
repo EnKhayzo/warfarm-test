@@ -9,6 +9,8 @@ import * as com from "@/app/common.js"
 import useObtainedComponents from '@/hooks/useObtainedComponents';
 import ResurgenceItemIcon from '@/components/ResurgenceItemIcon';
 import ObtainedResurgenceGroup from '@/components/ObtainedResurgenceGroup';
+import DucatLabel from '@/components/DucatLabel';
+import ObtainedLabelObject from '@/components/ObtainedLabelObject';
 
 export default function ComponentAddButton({ component, fullName=false, iconHeight='75px', width=null }){
     const router = useRouter();
@@ -34,10 +36,12 @@ export default function ComponentAddButton({ component, fullName=false, iconHeig
                 <div className='sized-content v-flex flex-center' style={{ gap: '1px' }}>
                     <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', minWidth: 'fit-content', textAlign: 'center' }}>{fullName ? component.rawObj.fullName : component.rawObj.name}</div>
                     {/* <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${com.getUserDataComponentSetting(component.rawObj.id, "obtained") ?? '0'}/${component.rawObj.required}`}</div> */}
-                    { componentIsAnomalous ? null : <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${obtainedComponents && obtainedComponents[component.rawObj.id] ? obtainedComponents[component.rawObj.id].obtained : '0'}/${component.rawObj.required}`}</div>}
+                    {/* { componentIsAnomalous ? null : <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${obtainedComponents && obtainedComponents[component.rawObj.id] ? obtainedComponents[component.rawObj.id].obtained : '0'}/${component.rawObj.required}`}</div>} */}
+                    { componentIsAnomalous ? null : <ObtainedLabelObject object={com.getObjectFromId(component.rawObj.id)}/> }
                 </div>
                 <TrackItemButton itemId={component.rawObj.id}/>
                 <ObtainedResurgenceGroup itemId={component.rawObj.id} positionAbsolute={true}/>
+                <DucatLabel rawObj={com.getObjectFromId(component.rawObj.id)}/>
             </div>
             {
                 componentIsAnomalous ? null:

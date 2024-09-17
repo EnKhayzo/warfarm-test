@@ -108,6 +108,7 @@ a[href^="ftp://"] {
   --color-text-farmed: #49aa5e;
   --color-secondary-farmed: #14331a; /* #1c3020; */
   --color-quaternary-farmed: #102014; /* #17251d; */
+  --color-quaternary-partial-farmed: #101b20;
 
   --color-component-common: rgb(84, 53, 22);
   --color-component-uncommon: rgb(49, 53, 54);
@@ -288,8 +289,6 @@ html * {
   background-color: var(--color-secondary);
   padding: 15px;
   border-radius: 10px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
 }
 
 .main-view-item-single-container {
@@ -553,6 +552,14 @@ html * {
   opacity: 0%;
 }
 
+
+.obtained-extra-component {
+  gap: 5px;
+  font-style: italic;
+  font-size: small;
+}
+
+
 .item-check-parent {
   position: relative;
 }
@@ -629,6 +636,10 @@ html * {
 
 .object-farmed-main-page {
   background-color: #00462359;
+}
+
+.object-farmed-partial-main-page {
+  background-color: #002a4659;
 }
 
 

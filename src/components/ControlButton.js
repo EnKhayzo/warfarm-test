@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import * as com from "../app/common.js"
 import ObtainedResurgenceGroup from './ObtainedResurgenceGroup.js';
+import DucatLabel from './DucatLabel.js';
 
 const ControlButton = ({ rawObj, infoObj=null, icon, vaulted, rarity, _labelHeading, _label, _labelFooter, onClick, onContextMenu, type }) => {  
   const router = useRouter();
@@ -92,6 +93,7 @@ const ControlButton = ({ rawObj, infoObj=null, icon, vaulted, rarity, _labelHead
       }
 
       <ObtainedResurgenceGroup itemId={rawObj.id}/>
+      <DucatLabel rawObj={com.getObjectFromId(rawObj.id)}/>
     </div>
   );
 

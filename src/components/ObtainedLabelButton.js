@@ -7,6 +7,7 @@ import TrackItemButton from '@/components/TrackItemButton.js';
 
 import * as com from "@/app/common.js"
 import useObtainedComponents from '@/hooks/useObtainedComponents';
+import ObtainedLabelObject from './ObtainedLabelObject';
 
 export default function ObtainedLabelButton({ component, isRawObj=false }){
     const router = useRouter();
@@ -15,6 +16,8 @@ export default function ObtainedLabelButton({ component, isRawObj=false }){
     
     const _component = (isRawObj ? component : component.rawObj);
     const componentIsAnomalous = _component.required <= 0;
+
+    // console.log(`_component`, _component, component);
 
     return (
         <div className='sized-content v-flex' style={{ alignSelf: 'stretch', gap: '5px' }}>
@@ -28,6 +31,7 @@ export default function ObtainedLabelButton({ component, isRawObj=false }){
                         +
                     </button>
                     <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${obtainedComponents && obtainedComponents[_component.id] ? obtainedComponents[_component.id].obtained : '0'}/${_component.required}`}</div>
+                    
                     <button 
                         className='sized-content h-flex object-page-component-owned-button flex-center'
                         onClick={(ev) => { ev.preventDefault(); ev.stopPropagation(); return com.decrementUserDataComponentObtained(_component.id); }}

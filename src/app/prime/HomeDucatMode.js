@@ -24,23 +24,12 @@ import Head from 'next/head';
 import Image from 'next/image'
 
 import * as com from "../common.js"
-import HomeFarmMode from './HomeFarmMode.js';
-import useGlobalMode from '@/hooks/useGlobalMode.js';
-import HomeDucatMode from './HomeDucatMode.js';
 
-export default function Home() {
+
+export default function HomeDucatMode() {
   const router = useRouter();
-  const [ globalMode, setGlobalMode ] = useGlobalMode();
-  const isFarmMode = globalMode == null || globalMode === "farmMode";
 
   return (
-    <>
-      {
-        isFarmMode ?
-          <HomeFarmMode/>
-        :
-          <HomeDucatMode/>
-      }
-    </>
+    <></>
   );
 }

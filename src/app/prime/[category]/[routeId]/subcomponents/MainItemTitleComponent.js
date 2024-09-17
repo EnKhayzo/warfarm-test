@@ -9,6 +9,7 @@ import * as com from "@/app/common.js"
 import ObtainedLabelObject from '@/components/ObtainedLabelObject';
 import ResurgenceItemIcon from '@/components/ResurgenceItemIcon';
 import ObtainedResurgenceGroup from '@/components/ObtainedResurgenceGroup';
+import DucatLabel from '@/components/DucatLabel';
 
 export default function MainItemTitleComponent({ itemId, iconUrl, labelHeader, label, labelFooter }){
     return (
@@ -29,6 +30,7 @@ export default function MainItemTitleComponent({ itemId, iconUrl, labelHeader, l
             <ObtainedLabelObject object={com.getObjectFromId(itemId)} collapseWhenNull={false}/>
             <TrackItemButton itemId={itemId}/>
             <ObtainedResurgenceGroup itemId={itemId}/>
+            <DucatLabel rawObj={com.getObjectFromId(itemId)}/>
         </div>
     );
 }

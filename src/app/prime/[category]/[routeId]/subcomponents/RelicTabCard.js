@@ -10,6 +10,7 @@ import * as com from "@/app/common.js"
 import useObtainedComponents from '@/hooks/useObtainedComponents';
 import ResurgenceItemIcon from '@/components/ResurgenceItemIcon';
 import ObtainedResurgenceGroup from '@/components/ObtainedResurgenceGroup';
+import DucatLabel from '@/components/DucatLabel';
 
 export default function RelicTabCard({ relicInfo, components, hideFarmed=false }){
     const router = useRouter();
@@ -46,6 +47,7 @@ export default function RelicTabCard({ relicInfo, components, hideFarmed=false }
                     <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', minWidth: 'fit-content' }}>{relic.rawObj.relic.name}</div>
                 </div>
                 <ResurgenceItemIcon itemId={relic.id}/>
+                <DucatLabel rawObj={com.getObjectFromId(relic.id)}/>
             </Link>
             <div 
               className='sized-content v-flex flex-center'

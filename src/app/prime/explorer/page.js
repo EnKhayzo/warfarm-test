@@ -34,6 +34,7 @@ import useObtainedComponents from '@/hooks/useObtainedComponents.js';
 import ObtainedLabelObject from '@/components/ObtainedLabelObject';
 import ObtainedResurgenceGroup from '@/components/ObtainedResurgenceGroup';
 import useMissionPriorities from '@/hooks/useMissionPriorities.js';
+import DucatLabel from '@/components/DucatLabel';
 
 
 const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) => {
@@ -161,6 +162,7 @@ const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) 
                       {/* <ObtainedLabelObject object={object}/> */}
                       <TrackItemButton itemId={com.getObjectId(object, category)}/>
                       <ObtainedResurgenceGroup itemId={com.getObjectId(object, category)} positionAbsolute={true}/>
+                      <DucatLabel rawObj={object}/>
                     </Link>
                   )) 
                 }
@@ -276,15 +278,12 @@ const ObjectSectionBuilder = ({ category }) => {
 export default function ExplorerPage() {
   const router = useRouter();
 
-  useEffect(() => {
-    document.title = com.generatePageTitle("Explorer");
-  }, []);
+  // useEffect(() => {
+  //   document.title = com.generatePageTitle("Explorer");
+  // }, []);
 
   return (
     <div className='sized-remaining v-flex flex-center' style={{ gap: '20px' }}>
-      <Head>
-          <title>{com.generatePageTitle("Explorer")}</title>
-      </Head>
       <TabComponent
         style={{ width: '95vw' }}
         defaultTab={"Items"}

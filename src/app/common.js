@@ -16,6 +16,7 @@
  */
 
 
+import * as po from "@/app/pathObjs.js"
 import * as global from "@/app/globalNameVariables.js"
 import { inflate, deflate } from "pako";
 
@@ -145,7 +146,7 @@ export function clearUserDataObtainedItems(){
   obtainedObservable.set({});
 }
 
-export function setUserDataComponentSetting(componentId, name, value){
+export function setUserDataComponentObtainedSetting(componentId, name, value){
     let userData = loadUserData();
 
     if(userData == null) userData = {};
@@ -165,7 +166,7 @@ export function incrementUserDataComponentObtained(componentId){
   oldObtained++;
   if(oldObtained > Number(getObjectFromId(componentId).required)) oldObtained = 0;
 
-  setUserDataComponentSetting(componentId, "obtained", oldObtained);
+  setUserDataComponentObtainedSetting(componentId, "obtained", oldObtained);
 }
 
 export function decrementUserDataComponentObtained(componentId){
@@ -173,7 +174,7 @@ export function decrementUserDataComponentObtained(componentId){
   oldObtained--;
   if(oldObtained < 0) oldObtained = Number(getObjectFromId(componentId).required);
 
-  setUserDataComponentSetting(componentId, "obtained", oldObtained);
+  setUserDataComponentObtainedSetting(componentId, "obtained", oldObtained);
 }
 
 /** setting name refers to the setting inside the component, can be 'obtained' or others */
@@ -471,6 +472,83 @@ export function getUserDataPrivacyConsentStatus(){
 }
 
 
+/* --------------- DUCAT USER DATA SECTION --------------- */
+
+export function clearUserDataExtrasObtained(){
+  let userData = loadUserData();
+
+  if(userData.extrasObtained != null) delete userData.extrasObtained;
+  saveUserData(userData);
+
+  extrasObservable.set({});
+}
+
+export function setUserDataExtrasObtainedSetting(componentId, name, value){
+    let userData = loadUserData();
+
+    if(userData == null) userData = {};
+
+    if(!("extrasObtained" in userData)) userData.extrasObtained = {};
+    if(!(componentId in userData.extrasObtained)) userData.extrasObtained[componentId] = {};
+
+
+    userData.extrasObtained[componentId][name] = value;
+    saveUserData(userData);
+    
+    extrasObservable.set(userData.extrasObtained);
+}
+
+export function incrementUserDataExtrasObtained(componentId){
+  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned"));
+  oldExtrasObtained++;
+
+  setUserDataExtrasObtainedSetting(componentId, "owned", oldExtrasObtained);
+}
+
+export function decrementUserDataExtrasObtained(componentId){
+  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned"));
+  oldExtrasObtained--;
+  if(oldExtrasObtained < 0) oldExtrasObtained = 0;
+
+  setUserDataExtrasObtainedSetting(componentId, "owned", oldExtrasObtained);
+}
+
+/** setting name refers to the setting inside the data object, can be 'owned' or others */
+export function getUserDataExtrasSetting(componentId, settingName){
+    const userData = loadUserData();
+
+    if(userData == null) return null;
+    if(!("extrasObtained" in userData)) return null;
+    if(!(componentId in userData.extrasObtained)) return null;
+
+    return userData.extrasObtained[componentId][settingName];
+}
+
+export function getUserDataExtrasObtained(componentId){
+  return getUserDataExtrasSetting(componentId, "owned");
+}
+
+export function getObtainedExtras(){
+  const userData = loadUserData();
+  return userData.extrasObtained ?? {};
+}
+
+export function setUserDataGlobalMode(mode){
+  const userData = loadUserData();
+  userData.globalMode = mode;
+  saveUserData(userData);
+
+  globalModeObservable.set(mode);
+}
+
+export function getUserDataGlobalMode(){
+  const userData = loadUserData();
+  return userData.globalMode ?? "farmMode";
+}
+
+/* --------------- /DUCAT USER DATA SECTION --------------- */
+
+
 
 
 
@@ -668,6 +746,56 @@ export function getMissionsThatDropComponent(componentId){
       : []
 }
 
+
+
+export class CustomObservable {
+  objToObserve = null;
+  listeners = [];
+
+  constructor(_objToObserve=null) {
+      this.objToObserve = _objToObserve;
+      this.listeners = [];
+  }
+
+  set(_objToObserve){
+      this.objToObserve = _objToObserve;
+      this.notifyAll();
+  }
+
+  get() { return this.objToObserve; }
+
+  /** callImmediately: calls this listener's function only once immediately after being added to the listeners list. */
+  addListener(func, callImmediately=false){
+      this.listeners.push(func);
+      if(callImmediately) func(this.objToObserve);
+  }
+
+  removeListener(func){
+      this.listeners = this.listeners.filter(_func => _func !== func);
+  }
+
+  notifyAll(){
+      for(const listener of this.listeners){
+          listener(this.objToObserve);
+      }
+  }
+};
+
+export let trackedItemsOvervable = new CustomObservable();
+export let obtainedObservable = new CustomObservable();
+export let missionPrioritiesObservable = new CustomObservable();
+export let dialogsUiObservable = new CustomObservable();
+export let notificationsUiObservable = new CustomObservable();
+export let preferencesObservable = new CustomObservable();
+
+export let trackListsObservable = new CustomObservable();
+export let currentTrackListIdObservable = new CustomObservable();
+
+export let extrasObservable = new CustomObservable();
+
+export let globalModeObservable = new CustomObservable();
+
+
 let initializing = true;
 
 export function setInitializing(_initializing){
@@ -694,6 +822,8 @@ let components = null;
 let objectPaths = null;
 let objectPathsIds = null;
 
+// let sitePaths = null;
+
 let initialized = false;
 export function getInitialized() { return initialized; }
 
@@ -718,14 +848,23 @@ export async function initialize(local=false) {
   
     let tempPaths = [];
 
-    tempPaths = [ ...tempPaths, ...Object.entries(await getAllItems()).map(([ id, item ]) =>            ({ category: "items",       route: `/prime/items/${extractAlphanumericCharactersOnly(id)}`,       routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
-    tempPaths = [ ...tempPaths, ...Object.entries(await getAllComponents()).map(([ id, component ]) =>  ({ category: "components",  route: `/prime/components/${extractAlphanumericCharactersOnly(id)}`,  routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
-    tempPaths = [ ...tempPaths, ...Object.entries(await getAllRelics()).map(([ id, relic ]) =>          ({ category: "relics",      route: `/prime/relics/${extractAlphanumericCharactersOnly(id)}`,      routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
-    tempPaths = [ ...tempPaths, ...Object.entries(await getAllMissions()).map(([ id, mission ]) =>      ({ category: "missions",    route: `/prime/missions/${extractAlphanumericCharactersOnly(id)}`,    routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
+    tempPaths = [ ...tempPaths, ...Object.entries(await getAllItems()).map(([ id, item ]) =>            ({ title: `${item.name}`,           category: "items",       route: `/prime/items/${extractAlphanumericCharactersOnly(id)}`,       routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
+    tempPaths = [ ...tempPaths, ...Object.entries(await getAllComponents()).map(([ id, component ]) =>  ({ title: `${component.fullName}`,  category: "components",  route: `/prime/components/${extractAlphanumericCharactersOnly(id)}`,  routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
+    tempPaths = [ ...tempPaths, ...Object.entries(await getAllRelics()).map(([ id, relic ]) =>          ({ title: `${relic.name}`,          category: "relics",      route: `/prime/relics/${extractAlphanumericCharactersOnly(id)}`,      routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
+    tempPaths = [ ...tempPaths, ...Object.entries(await getAllMissions()).map(([ id, mission ]) =>      ({ title: `${mission.fullName}`,    category: "missions",    route: `/prime/missions/${extractAlphanumericCharactersOnly(id)}`,    routeId: extractAlphanumericCharactersOnly(id), id: id })).flat(1) ];
     
 
     objectPaths = Object.fromEntries(tempPaths.map(path => [ path.routeId, path ]));
     objectPathsIds = Object.fromEntries(tempPaths.map(path => [ path.id, path ]));
+
+    // sitePaths = Object.fromEntries([ 
+    //   ...objectPaths,
+    //   { title: "About", category: "_misc", route: "/prime/about", routeId: "_about", id: "About" },
+    //   { title: "Explorer", category: "_misc", route: "/prime/explorer", routeId: "_explorer", id: "Explorer" },
+    //   { title: "Support Me", category: "_misc", route: "/prime/supportme", routeId: "_supportme", id: "Support Me" },
+    //   { title: "Upcoming", category: "_misc", route: "/prime/upcoming", routeId: "_upcoming", id: "Upcoming" },
+    //   { title: "Home", category: "_misc", route: "/prime", routeId: "_home", id: "Home" },
+    // ].map(el => [ el.routeId, el ]));
 
     if(local){
       createEmptyTrackListIfNoTrackLists();
@@ -739,6 +878,10 @@ export async function initialize(local=false) {
 
       trackListsObservable.set(getUserDataTrackLists());
       currentTrackListIdObservable.set(getUserDataCurrentTrackListId());
+
+      extrasObservable.set(getObtainedExtras());
+
+      globalModeObservable.set(getUserDataGlobalMode());
     }
 
     initialized = true;
@@ -750,7 +893,7 @@ export function refreshUserData(newUserData) {
   // this is set to getUserDataTrackedItems() instead of newUserData.trackedItems because
   // it seemed to create recursive loops with the listeners set up for trackLists
   // probably something regarding a shared reference?
-  trackedItemsOvervable.set(getUserDataTrackedItems())  // .set(newUserData.trackedItems ?? {});
+  trackedItemsOvervable.set(getUserDataTrackedItems());  // .set(newUserData.trackedItems ?? {});
 
   obtainedObservable.set(newUserData.componentsObtained ?? {});
   missionPrioritiesObservable.set(newUserData.missionPriorityPreferences ?? getDefaultMissionTypePriorities());
@@ -759,6 +902,10 @@ export function refreshUserData(newUserData) {
 
   trackListsObservable.set(getUserDataTrackLists());
   currentTrackListIdObservable.set(getUserDataCurrentTrackListId());
+
+  extrasObservable.set(getObtainedExtras());
+
+  globalModeObservable.set(getUserDataGlobalMode());
 
   createEmptyTrackListIfNoTrackLists();
 
@@ -775,6 +922,10 @@ export function setAllUserData(userData){
   trackListsObservable.set(getUserDataTrackLists());
   currentTrackListIdObservable.set(getUserDataCurrentTrackListId());
 
+  extrasObservable.set(getObtainedExtras());
+
+  globalModeObservable.set(getUserDataGlobalMode());
+
   createEmptyTrackListIfNoTrackLists();
 }
 
@@ -787,6 +938,10 @@ export function clearAllUserData(){
 
   currentTrackListIdObservable.set(null);
   trackListsObservable.set({});
+
+  extrasObservable.set({});
+
+  globalModeObservable.set("farmMode");
 
   createEmptyTrackListIfNoTrackLists();
 }
@@ -1339,49 +1494,6 @@ export function getSearchResultRelatedObjects(name, category, type, activeTab, r
   return result;
 }
 
-export class CustomObservable {
-  objToObserve = null;
-  listeners = [];
-
-  constructor(_objToObserve=null) {
-      this.objToObserve = _objToObserve;
-      this.listeners = [];
-  }
-
-  set(_objToObserve){
-      this.objToObserve = _objToObserve;
-      this.notifyAll();
-  }
-
-  get() { return this.objToObserve; }
-
-  /** callImmediately: calls this listener's function only once immediately after being added to the listeners list. */
-  addListener(func, callImmediately=false){
-      this.listeners.push(func);
-      if(callImmediately) func(this.objToObserve);
-  }
-
-  removeListener(func){
-      this.listeners = this.listeners.filter(_func => _func !== func);
-  }
-
-  notifyAll(){
-      for(const listener of this.listeners){
-          listener(this.objToObserve);
-      }
-  }
-};
-
-export let trackedItemsOvervable = new CustomObservable();
-export let obtainedObservable = new CustomObservable();
-export let missionPrioritiesObservable = new CustomObservable();
-export let dialogsUiObservable = new CustomObservable();
-export let notificationsUiObservable = new CustomObservable();
-export let preferencesObservable = new CustomObservable();
-
-export let trackListsObservable = new CustomObservable();
-export let currentTrackListIdObservable = new CustomObservable();
-
 /** please try using this as little as possible (see Observer Pattern and Custom Observer), pollInterval is in ms */
 export async function waitUntil(predicate, pollInterval=250){
   while(!(await predicate())){
@@ -1573,6 +1685,28 @@ export function itemIsFarmedPerc(rawObj, obtainedComponents=null){
             Object.keys(rawObj.components).length;
 }
 
+export function relicIsFarmedPerc(rawObj, obtainedComponents=null){
+  if(rawObj == null || rawObj.rewards == null) return 0;
+
+  if(!obtainedComponents) obtainedComponents = getObtainedComponents();
+
+  const relicRewards = getRelicRewards(rawObj)
+    .map(entry => getObjectFromId(entry.rewardFullName))
+    .filter(obj => obj.anomalous == null || obj.anomalous == false);
+
+  const res = relicRewards
+          .reduce((acc, component) => {
+            acc += componentIsFarmedPerc(component, obtainedComponents);
+            return acc;
+          }, 0)
+          /
+          relicRewards.length;
+
+  // console.log(`is relic farmed?`, res);
+
+  return res;
+}
+
 export function objectIsFarmedPerc(rawObj, obtainedComponents=null){
   if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
   return  rawObj.category === 'items' ? 
@@ -1580,6 +1714,9 @@ export function objectIsFarmedPerc(rawObj, obtainedComponents=null){
           : 
           rawObj.category === 'components' ? 
             componentIsFarmedPerc(rawObj, obtainedComponents)
+          :
+          rawObj.category === 'relics' ? 
+            relicIsFarmedPerc(rawObj, obtainedComponents)
           :
             0;
 }
@@ -1638,7 +1775,7 @@ export function setComponentToFarmed(rawObj, farmed, obtainedComponents=null){
   if(rawObj == null) { console.warn(`rawObj is null!`, rawObj); return; }
   if(rawObj.required == null || rawObj.required <= 0) return;
   
-  setUserDataComponentSetting(rawObj.id, "obtained", farmed ? rawObj.required : 0);
+  setUserDataComponentObtainedSetting(rawObj.id, "obtained", farmed ? rawObj.required : 0);
 }
 
 export function setItemToFarmed(rawObj, farmed){
@@ -1786,6 +1923,14 @@ export function filterDict(dict, filterFunc) {
   return Object.fromEntries(Object.entries(dict).filter(filterFunc));
 }
 
+export function generatePageTitleFromSiteMap(pathObjId) {
+  const pathObj = po.pathObjs[pathObjId];
+  if(pathObj == null) return "";
+  
+  console.log(`generating page title from site map`, pathObjId, `${pathObj.title} | ${getBaseEnvPath().titleName}`);
+  return `${pathObj.title} | ${getBaseEnvPath().titleName}`;
+}
+
 export function generatePageTitle(pageTitle) {
   return `${pageTitle} | ${getBaseEnvPath().titleName}`;
 }
@@ -1923,4 +2068,50 @@ export function getTimestampAsDurationString(timestamp){
 
 export function getBaseEnvPath() {
   return global.names;
+}
+
+export function getDucatValueComponent(rawObj){
+  if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
+
+  if(!("ducats" in rawObj)) return -1;
+
+  return rawObj.ducats;
+}
+
+export function getDucatValueItem(rawObj){
+  if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
+
+  return getItemComponents(rawObj.id).reduce((acc, val) => {
+    const value = getDucatValueComponent(val);
+    if(value == -1) return acc;
+
+    acc += value;
+    return acc;
+  }, 0);
+}
+
+export function getDucatValueRelic(rawObj){
+  if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
+
+  return getRelicRewards(rawObj).reduce((acc, val) => {
+    const value = getDucatValueComponent(getObjectFromId(val.rewardFullName));
+    if(value == -1) return acc;
+
+    acc += value;
+    return acc;
+  }, 0);
+}
+
+export function getDucatValue(rawObj){
+  if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
+  return  rawObj.category === 'items' ? 
+            getDucatValueItem(rawObj) 
+          : 
+          rawObj.category === 'components' ? 
+            getDucatValueComponent(rawObj)
+          :
+          rawObj.category === 'relics' ? 
+            getDucatValueRelic(rawObj)
+          :
+            0;
 }

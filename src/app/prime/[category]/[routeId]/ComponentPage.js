@@ -27,9 +27,9 @@ import LazyLoaded from '@/components/LazyLoaded.js';
 import MainItemTitleComponent from './subcomponents/MainItemTitleComponent.js';
 import TabComponent from '@/components/TabComponent.js';
 import FallbackObject from './FallbackObject.js';
-import ComponentAddButtons from '@/components/ComponentAddButtons.js';
 import useMissionPriorities from '@/hooks/useMissionPriorities.js';
 import ResurgenceItemIcon from '@/components/ResurgenceItemIcon.js';
+import ObtainedLabelButton from '@/components/ObtainedLabelButton.js';
 
 const RelicTab = ({component, rarityPriorities}) => {
   const router = useRouter();
@@ -234,7 +234,7 @@ export default function ComponentPage({ routeId, pathObj }) {
                       </Link>
                   }
                   <MainItemTitleComponent itemId={component.id} iconUrl={`${com.getBaseEnvPath().basePath}/images/${component.fullName}.png`} label={pathObj.id} />
-                  <div style={{ marginTop: '5px' }}><ComponentAddButtons component={component}/></div>
+                  <div style={{ marginTop: '5px' }}><ObtainedLabelButton component={component} isRawObj={true} showLabel={false}/></div>
                 </div>
                 <TabComponent
                   hasMinWidth={true}

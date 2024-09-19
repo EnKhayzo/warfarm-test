@@ -45,6 +45,7 @@ import PrivacyConsentPopup from "./PrivacyConsentPopup.js";
 import LabelCheckbox from "@/components/LabelCheckbox.js";
 import Script from "next/script.js";
 import useGlobalMode from "@/hooks/useGlobalMode.js";
+import useContextMenuUis from "@/hooks/useContextMenuUis.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -115,7 +116,7 @@ function DucatModeButton(){
       iconClassName={isFarmMode ? 'layout-header-icon' : ''}
       iconStyle={isFarmMode ? {} : { marginTop: '2px', width: '20px', height: '20px', objectFit: 'contain' }}
       onClick={(ev) => {
-        console.log(`switch mode!`);
+        // console.log(`switch mode!`);
         if(isFarmMode){
           com.setUserDataGlobalMode("ducatMode");
         }
@@ -133,6 +134,7 @@ export function MainLayoutComponent({children}){
   const searchParams = useSearchParams();
   const [ dialogUis, setDialogUis ] = useDialogUis();
   const [ notificationUis, setNotificationUis ] = useNotificationUis();
+  const [ contextMenuUis, setContextMenuUis ] = useContextMenuUis();
   const mainScrollableRef = useRef(null);
 
   const [ userPreferences, setUserPreferences ] = useUserDataPreferences();
@@ -219,6 +221,7 @@ export function MainLayoutComponent({children}){
 
   const areThereDialogUis = dialogUis != null && dialogUis.length > 0;
   const areThereNotificationUis = notificationUis != null && notificationUis.length > 0;
+  const areThereContextMenuUis = contextMenuUis != null && contextMenuUis.length > 0;
 
   const [ forceHomeBlink, setForceHomeBlink ] = useState(false);
   const [ searchExpanded, setSearchExpanded ] = useState(false);
@@ -538,6 +541,49 @@ export function MainLayoutComponent({children}){
           </div>
         }
         {
+          !areThereContextMenuUis ? null:
+          <div 
+            className='sized-remaining v-flex flex-center'
+            style={{ 
+              pointerEvents: 'none',
+              position: 'absolute', 
+              top: '0px', 
+              left: '0px', 
+              width: '100vw', 
+              height: '100vh',
+              backgroundColor: 'transparent', 
+              justifyContent: 'flex-end',
+              gap: '10px',
+              padding: '20px'
+            }}
+          >
+
+            {     
+              contextMenuUis.map((contextMenuUi, index) => (
+                <div
+                key={`${index}-${contextMenuUi.children}`}
+                  className="sized-content h-flex flex-center global-context-menu-ui"
+                  style={{
+                    position: 'absolute',
+                    pointerEvents: 'all',
+                    top: contextMenuUi.position && contextMenuUi.position.top ? contextMenuUi.position.top : 'unset',
+                    left: contextMenuUi.position && contextMenuUi.position.left ? contextMenuUi.position.left : 'unset',
+                    right: contextMenuUi.position && contextMenuUi.position.right ? contextMenuUi.position.right : 'unset',
+                    bottom: contextMenuUi.position && contextMenuUi.position.bottom ? contextMenuUi.position.bottom : 'unset',
+                    borderRadius: '10px',
+                    padding: '10px'
+                  }}
+                >
+                  { 
+                    contextMenuUi.children == null ? null:
+                      contextMenuUi.children({})
+                  }
+                </div>
+              ))
+            }
+          </div>
+        }
+        {
           !areThereNotificationUis ? null:
           <div 
             className='sized-remaining v-flex flex-center'
@@ -574,7 +620,7 @@ export function MainLayoutComponent({children}){
                         <img className="icon-success-filter" style={{ width: '20px', height: '20px' }} src={`${com.getBaseEnvPath().basePath}/icons/success.svg`}/>
                         :
                       notificationUi.type === "failure" ? 
-                        <img className="icon-success-filter" src={`${com.getBaseEnvPath().basePath}/icons/failure.svg`}/>
+                        <img className="icon-failure-filter" style={{ width: '20px', height: '20px' }} src={`${com.getBaseEnvPath().basePath}/icons/failure.svg`}/>
                       :null
                     }
                   </div>

@@ -491,10 +491,14 @@ export function setUserDataExtrasObtainedSetting(componentId, name, value){
     if(!("extrasObtained" in userData)) userData.extrasObtained = {};
     if(!(componentId in userData.extrasObtained)) userData.extrasObtained[componentId] = {};
 
-
     userData.extrasObtained[componentId][name] = value;
     saveUserData(userData);
     
+    if(name === "owned"){
+      const sellValue = getUserDataSellItemValue(componentId);
+      if(sellValue > value) setUserDataSellItemValue(componentId, value);
+    }
+
     extrasObservable.set(userData.extrasObtained);
 }
 
@@ -524,8 +528,20 @@ export function getUserDataExtrasSetting(componentId, settingName){
     return userData.extrasObtained[componentId][settingName];
 }
 
+export function setUserDataExtrasObtained(componentId, value){
+  return setUserDataExtrasObtainedSetting(componentId, "owned", value);
+}
+
 export function getUserDataExtrasObtained(componentId){
-  return getUserDataExtrasSetting(componentId, "owned");
+  return getUserDataExtrasSetting(componentId, "owned") ?? 0;
+}
+
+export function setUserDataExtrasCrafted(componentId, value){
+  return setUserDataExtrasObtainedSetting(componentId, "crafted", value);
+}
+
+export function getUserDataExtrasCrafted(componentId){
+  return getUserDataExtrasSetting(componentId, "crafted") ?? false;
 }
 
 export function getObtainedExtras(){
@@ -546,6 +562,213 @@ export function getUserDataGlobalMode(){
   return userData.globalMode ?? "farmMode";
 }
 
+
+/* --------- SELL LIST SECTION ---------- */
+
+export function getUserDataSellItems(){
+  const userData = loadUserData();
+  if(!userData.sellItems) return {};
+
+  return userData.sellItems;
+}
+
+export function setUserDataSellItems(sellItems){
+  const userData = loadUserData();
+  userData.sellItems = sellItems;
+  saveUserData(userData);
+
+  sellItemsOvervable.set(sellItems);
+}
+
+export function getUserDataSellItem(itemId){
+  const sellItems = getUserDataSellItems();
+  return sellItems[itemId] ?? {};
+}
+
+export function getUserDataSellItemValue(itemId){
+  const sellItem = getUserDataSellItem(itemId);
+  return sellItem != null && sellItem.sellValue != null ? sellItem.sellValue : 0;
+}
+
+export function clearUserDataSellItems(){
+  let userData = loadUserData();
+  
+  if(userData.sellItems != null) delete userData.sellItems;
+  saveUserData(userData);
+
+  sellItemsOvervable.set({});
+}
+
+export function setUserDataSellItem(itemId, value){
+  if(itemId == null) { console.warn("itemId id is null! aborting"); return; }
+
+  const sellItems = getUserDataSellItems();
+
+  sellItems[itemId] = value;
+  setUserDataSellItems(sellItems);
+
+  const sellList = getUserDataCurrentActiveSellList();
+  sellList.sellItems = sellItems;
+  setUserDataSellList(sellList.id, sellList);
+}
+
+export function setUserDataSellItemValue(itemId, value){
+  if(itemId == null) { console.warn("itemId id is null! aborting"); return; }
+
+  const sellItem = getUserDataSellItem(itemId);
+  sellItem.sellValue = value;
+
+  setUserDataSellItem(itemId, sellItem);
+}
+
+export function incrementUserDataSellItemValue(componentId){
+  if(componentId == null) { console.warn("component id is null! aborting increment"); return; }
+  
+  let extrasObtained = getUserDataExtrasObtained(componentId);
+
+  let oldSellItem = Number(getUserDataSellItemValue(componentId));
+  oldSellItem++;
+  if(oldSellItem > extrasObtained) oldSellItem = 0;
+
+  setUserDataSellItemValue(componentId, oldSellItem);
+}
+
+export function decrementUserDataSellItemValue(componentId){
+  if(componentId == null) { console.warn("component id is null! aborting decrement"); return; }
+
+  let extrasObtained = getUserDataExtrasObtained(componentId);
+
+  let oldSellItem = Number(getUserDataSellItemValue(componentId));
+  oldSellItem--;
+  if(oldSellItem < 0) oldSellItem = extrasObtained;
+
+  setUserDataSellItemValue(componentId, oldSellItem);
+}
+
+export function getUserDataCurrentActiveSellList(){
+  const sellLists = getUserDataSellLists();
+  if(sellLists == null || isDictEmpty(sellLists)) { console.warn(`no sell lists!`); return {}; }
+
+  const currentId = getUserDataCurrentSellListId();
+  if(sellLists[currentId] == null || isDictEmpty(sellLists[currentId])){ console.warn(`no current selllist!`); return {}; }
+
+  return sellLists[currentId];
+}
+
+export function getUserDataSellLists(){
+  const userData = loadUserData();
+  if(!userData.sellLists) userData.sellLists = {};
+
+  return userData.sellLists;
+}
+
+export function setUserDataSellLists(sellLists){
+  const userData = loadUserData();
+
+  userData.sellLists = sellLists;
+  saveUserData(userData);
+
+  sellListsObservable.set(sellLists);
+}
+
+export function getUserDataSellList(id){
+  const sellLists = getUserDataSellLists();
+  return sellLists[id] ?? {};
+}
+
+export function createEmptySellListIfNoSellLists(){
+  const sellLists = getUserDataSellLists();
+  if(!isDictEmpty(sellLists)) return;
+
+  const newName = generateSellListName();
+  addUserDataSellList({ id: newName, sellItems: getUserDataSellItems() });
+  setUserDataActiveSellList(newName);
+}
+
+export function setUserDataSellList(id, sellList){
+  const sellLists = getUserDataSellLists();
+  sellLists[id] = sellList;
+  setUserDataSellLists(sellLists);
+}
+
+export function renameUserDataSellList(id, newId){
+  if(id === newId) return;
+
+  const sellLists = getUserDataSellLists();
+  if(!sellLists[id]) { console.warn(`no sell list exists with id!`, id); return; }
+
+  let sellList = cloneDict(sellLists[id]);
+  sellList.id = newId;
+
+  addUserDataSellList(sellList);
+  removeUserDataSellList(id);
+
+  setUserDataActiveSellList(newId);
+}
+
+export function addUserDataSellList(obj){
+  if(obj == null || obj.id == null || obj.sellItems == null){ console.warn(`incomplete obj!`, obj); return; }
+
+  const sellLists = getUserDataSellLists();
+  sellLists[obj.id] = obj;
+
+  setUserDataSellLists(sellLists);
+}
+
+export function removeUserDataSellList(id){
+  if(id == null ){ console.warn(`id is null!`, id); return; }
+
+  // this is because of the listener of sellItems, it would copy the sell items in the newly
+  // created sell list in case this removal makes sell lists empty
+  setUserDataSellItems({});
+
+  let sellLists = getUserDataSellLists();
+  if(sellLists[id] != null) delete sellLists[id];
+
+  setUserDataSellLists(sellLists);
+
+  createEmptySellListIfNoSellLists();
+  if(getUserDataCurrentSellListId() === id) setUserDataActiveSellList(Object.keys(getUserDataSellLists())[0]);
+}
+
+/** sets the current active variable AND changes sellItems to match said sell list */
+export function setUserDataActiveSellList(id){
+  const sellLists = getUserDataSellLists();
+
+  if(!sellLists[id]){ console.warn(`no sell list of id found to set as active!`, id); return; }
+  if(sellLists[id].sellItems == null){ console.warn(`sell list to set has no sell items (null)!`, id); return; }
+
+  setUserDataCurrentSellListId(id);
+  setUserDataSellItems(sellLists[id].sellItems);
+}
+
+export function setUserDataCurrentSellListId(id){
+  const userData = loadUserData();
+
+  userData.currentSellList = id;
+  saveUserData(userData);
+
+  currentSellListIdObservable.set(id);
+}
+
+export function getUserDataCurrentSellListId(){
+  const userData = loadUserData();
+  return userData.currentSellList;
+}
+
+export function generateSellListName(){
+  const sellLists = getUserDataSellLists();
+
+  let num = 1;
+  let currentName = `Sell List ${num}`;
+  while(sellLists[currentName] != null) {
+    num++;
+    currentName = `Sell List ${num}`;
+  }
+
+  return currentName;
+}
+
 /* --------------- /DUCAT USER DATA SECTION --------------- */
 
 
@@ -554,6 +777,8 @@ export function getUserDataGlobalMode(){
 
 export function isDictEmpty(dict){
   if(dict == null) return true;
+
+  // console.log(`is dict empty?`, Object.keys(dict).length <= 0, dict)
   return Object.keys(dict).length <= 0;
 }
 
@@ -617,7 +842,7 @@ export async function triggerFileUpload() {
             // Read the file as a text string
             reader.readAsText(file);
         } else {
-            console.log("No file selected.");
+            console.warn("No file selected.");
             reject(error);
         }
     });
@@ -781,11 +1006,16 @@ export class CustomObservable {
   }
 };
 
+export let dialogsUiObservable = new CustomObservable();
+export let notificationsUiObservable = new CustomObservable();
+export let contextMenuUisObservable = new CustomObservable();
+
+// user data observables
 export let trackedItemsOvervable = new CustomObservable();
 export let obtainedObservable = new CustomObservable();
 export let missionPrioritiesObservable = new CustomObservable();
-export let dialogsUiObservable = new CustomObservable();
-export let notificationsUiObservable = new CustomObservable();
+
+
 export let preferencesObservable = new CustomObservable();
 
 export let trackListsObservable = new CustomObservable();
@@ -794,6 +1024,10 @@ export let currentTrackListIdObservable = new CustomObservable();
 export let extrasObservable = new CustomObservable();
 
 export let globalModeObservable = new CustomObservable();
+
+export let sellItemsOvervable = new CustomObservable();
+export let sellListsObservable = new CustomObservable();
+export let currentSellListIdObservable = new CustomObservable();
 
 
 let initializing = true;
@@ -868,12 +1102,18 @@ export async function initialize(local=false) {
 
     if(local){
       createEmptyTrackListIfNoTrackLists();
+      createEmptySellListIfNoSellLists();
 
+      dialogsUiObservable.set([]);
+      notificationsUiObservable.set([]);
+      contextMenuUisObservable.set([]);
+
+      // user data observables
       trackedItemsOvervable.set(getUserDataTrackedItems());
       obtainedObservable.set(getObtainedComponents());
       missionPrioritiesObservable.set(getDefaultMissionTypePriorities());
-      dialogsUiObservable.set([]);
-      notificationsUiObservable.set([]);
+
+
       preferencesObservable.set(getUserDataPreferences());
 
       trackListsObservable.set(getUserDataTrackLists());
@@ -882,6 +1122,10 @@ export async function initialize(local=false) {
       extrasObservable.set(getObtainedExtras());
 
       globalModeObservable.set(getUserDataGlobalMode());
+      
+      sellItemsOvervable.set(getUserDataSellItems());
+      sellListsObservable.set(getUserDataSellLists());
+      currentSellListIdObservable.set(getUserDataCurrentSellListId());
     }
 
     initialized = true;
@@ -907,8 +1151,12 @@ export function refreshUserData(newUserData) {
 
   globalModeObservable.set(getUserDataGlobalMode());
 
-  createEmptyTrackListIfNoTrackLists();
+  sellItemsOvervable.set(getUserDataSellItems());
+  sellListsObservable.set(getUserDataSellLists());
+  currentSellListIdObservable.set(getUserDataCurrentSellListId());
 
+  createEmptyTrackListIfNoTrackLists();
+  createEmptySellListIfNoSellLists();
 }
 
 export function setAllUserData(userData){
@@ -926,7 +1174,12 @@ export function setAllUserData(userData){
 
   globalModeObservable.set(getUserDataGlobalMode());
 
+  sellItemsOvervable.set(getUserDataSellItems());
+  sellListsObservable.set(getUserDataSellLists());
+  currentSellListIdObservable.set(getUserDataCurrentSellListId());
+
   createEmptyTrackListIfNoTrackLists();
+  createEmptySellListIfNoSellLists();
 }
 
 export function clearAllUserData(){
@@ -942,6 +1195,10 @@ export function clearAllUserData(){
   extrasObservable.set({});
 
   globalModeObservable.set("farmMode");
+
+  sellItemsOvervable.set({});
+  sellListsObservable.set({});
+  currentSellListIdObservable.set(null);
 
   createEmptyTrackListIfNoTrackLists();
 }
@@ -1861,7 +2118,7 @@ export function getDialogUis(){
   return dialogsUiObservable.get();
 }
 
-
+/** notification: { type, label } */
 export function showNotificationUi(notification) {
   notificationsUiObservable.set(notificationsUiObservable.get().concat(notification));
   if(notification.type === "success" || notification.type === "failure"){
@@ -1886,6 +2143,45 @@ export function removeNotificationUi(notification, options) {
 
 export function getNotificationUis() {
   return notificationsUiObservable.get();
+}
+
+export function getContextMenuUisRemoveListener(contextMenu){
+  const removeClickListener = (ev) => {
+    if(ev.target.closest(".global-context-menu-ui") == null) {
+      removeContextMenuUis(contextMenu);
+      document.removeEventListener('click', removeClickListener);
+    }
+  }
+  return removeClickListener;
+}
+
+/** contextMenu: { position, children: function(props) } */
+export function showContextMenuUis(contextMenu) {
+  contextMenuUisObservable.set(contextMenuUisObservable.get().concat(contextMenu));
+  document.addEventListener('click', getContextMenuUisRemoveListener(contextMenu));
+}
+
+
+export function toggleContextMenuUis(contextMenu) {
+  const idx = contextMenuUisObservable.get().indexOf(contextMenu);
+  if(idx > -1) {
+    removeContextMenuUis(contextMenu);
+    document.removeEventListener('click', getContextMenuUisRemoveListener(contextMenu));
+  }
+  else showContextMenuUis(contextMenu);
+}
+
+export function removeContextMenuUis(contextMenu) {
+  const idx = contextMenuUisObservable.get().indexOf(contextMenu);
+  if(idx < 0) { console.warn(`no contextMenu found! trying to match`, contextMenu); return; }
+
+  let newList = [ ...contextMenuUisObservable.get() ];
+  newList.splice(idx, 1);
+  contextMenuUisObservable.set(newList);
+}
+
+export function getContextMenuUis() {
+  return contextMenuUisObservable.get();
 }
 
 
@@ -1920,6 +2216,7 @@ export function getObjectDisplayName(rawObj, category=null){
  * a dict to then return.
  */
 export function filterDict(dict, filterFunc) {
+  // console.log(`filterDict entries`, Object.entries(dict), Object.fromEntries(Object.entries(dict)))
   return Object.fromEntries(Object.entries(dict).filter(filterFunc));
 }
 
@@ -1927,7 +2224,7 @@ export function generatePageTitleFromSiteMap(pathObjId) {
   const pathObj = po.pathObjs[pathObjId];
   if(pathObj == null) return "";
   
-  console.log(`generating page title from site map`, pathObjId, `${pathObj.title} | ${getBaseEnvPath().titleName}`);
+  // console.log(`generating page title from site map`, pathObjId, `${pathObj.title} | ${getBaseEnvPath().titleName}`);
   return `${pathObj.title} | ${getBaseEnvPath().titleName}`;
 }
 

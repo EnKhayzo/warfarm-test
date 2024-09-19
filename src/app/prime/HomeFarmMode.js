@@ -25,9 +25,9 @@ import Image from 'next/image'
 
 import * as com from "../common.js"
 import LazyLoaded from '@/components/LazyLoaded.js';
-import TrackItemButton from '@/components/TrackItemButton.js';
+import ItemActionButton from '@/components/ItemActionButton.js';
 import useTrackedItems from '@/hooks/useTrackedItems.js'
-import ObtainedLabelObject from '@/components/ObtainedLabelObject.js';
+import ObjectStateLabel from '@/components/ObjectStateLabel.js';
 import FallbackObject from './[category]/[routeId]/FallbackObject.js';
 import useMissionPriorities from '@/hooks/useMissionPriorities.js';
 import TabComponent from '@/components/TabComponent.js';
@@ -263,7 +263,7 @@ export function TrackedItemsComponent(){
   return (
       <div className='sized-content tracked-items v-flex flex-center' style={{ gap: '50px' }}>
         {
-          com.isDictEmpty(trackLists) || (Object.keys(trackLists).length == 1 && com.isDictEmpty(com.filterDict(trackedItems, entry => entry[1].tracked == true))) ? null:
+          (Object.keys(trackLists).length <= 1 && com.isDictEmpty(com.filterDict(trackedItems, entry => entry[1].tracked == true))) ? null:
             <div>
               <TrackListSelector/>
             </div>
@@ -305,12 +305,12 @@ export function TrackedItemsComponent(){
                               if(trackedObject == null) return null;
 
                               if(trackedObject.category === "items" || trackedObject.category === "components") return (
-                                <ObtainedLabelObject object={trackedObject} />
+                                <ObjectStateLabel object={trackedObject} />
                               ); 
 
                               return null; 
                             })() }
-                            { sharedTrackList != null ? null: <TrackItemButton itemId={itemId} positionAbsolute={true}/> }
+                            { sharedTrackList != null ? null: <ItemActionButton itemId={itemId} positionAbsolute={true}/> }
                             <ObtainedResurgenceGroup itemId={itemId} positionAbsolute={true}/>
                             <DucatLabel rawObj={com.getObjectFromId(itemId)}/>
                           </Link>

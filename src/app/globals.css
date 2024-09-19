@@ -498,6 +498,48 @@ html * {
 }
 
 
+
+
+
+.sell-button {
+
+}
+
+.sell-button-container.absolute {
+  position: relative;
+}
+
+.sell-button.absolute {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.tracker-item-parent .sell-button-icon {
+  opacity: 0%;
+}
+
+.sell-button-icon.sell, 
+.sell-button-icon:hover, 
+.tracker-item-parent:hover .sell-button-icon {
+  opacity: 100%;
+}
+
+
+.sell-button-icon {
+  filter: invert(79%) sepia(14%) saturate(184%) hue-rotate(359deg) brightness(87%) contrast(86%);
+  width: 20px;
+  height: 20px;
+  opacity: 100%
+}
+
+.sell-button-icon.sell {
+  /* #8d651d */
+  filter: invert(35%) sepia(20%) saturate(4292%) hue-rotate(21deg) brightness(94%) contrast(77%);
+}
+
+
+
 .obtained-check {
 
 }
@@ -719,6 +761,11 @@ html * {
   filter: invert(22%) sepia(94%) saturate(7406%) hue-rotate(159deg) brightness(90%) contrast(82%);
 }
 
+.icon-failure-filter {
+  /* #6b2020 */
+  filter: invert(14%) sepia(60%) saturate(2638%) hue-rotate(341deg) brightness(84%) contrast(89%);
+}
+
 .search-button{
   display: none;
 }
@@ -934,3 +981,13 @@ input:checked + .slider:before {
 }
 
 /*   --------------------------------------- */
+
+.sell-pane-button {
+  background-color: var(--color-component-rare);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.global-context-menu-ui {
+  background-color: var(--color-tertiary);
+}

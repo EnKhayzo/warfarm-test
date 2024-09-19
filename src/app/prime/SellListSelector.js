@@ -8,27 +8,26 @@ import ItemActionButton from '@/components/ItemActionButton.js';
 
 import * as com from "@/app/common.js"
 import useObtainedComponents from '@/hooks/useObtainedComponents';
-import useTrackLists from '@/hooks/useTrackLists';
-import useCurrentTrackList from '@/hooks/useCurrentTrackList';
-import useTrackedItems from '@/hooks/useTrackedItems';
 import IconButton from '@/components/IconButton';
 import ObtainedResurgenceGroup from '@/components/ObtainedResurgenceGroup';
 import ObjectStateLabel from '@/components/ObjectStateLabel';
 import ConfirmButton from '@/components/ConfirmButton';
 import HomeSelectorComponent from './HomeSelectorComponent';
+import useSellItems from '@/hooks/useSellItems';
+import useSellLists from '@/hooks/useSellLists';
+import useCurrentSellList from '@/hooks/useCurrentSellList';
 
-export default function TrackListSelector({}){
+export default function SellListSelector({}){
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [ trackLists, setTrackLists ] = useTrackLists();
-    const [ currentTrackList, setCurrentTrackList ] = useCurrentTrackList();
-    const [ trackedItems, setTrackedItems ] = useTrackedItems();
+    const [ sellLists, setSellLists ] = useSellLists();
+    const [ currentSellList, setCurrentSellList ] = useCurrentSellList();
     const [ obtainedComponents, setObtainedComponents ] = useObtainedComponents();
 
     const [ menuOpen, setMenuOpen ] = useState(false);
     const menuRef = useRef(null);
 
-    const sharedTrackList = searchParams.get("sharedTrackList") ? com.decodeFromBase64(searchParams.get("sharedTrackList")) : null;
+    const sharedSellList = searchParams.get("sharedSellList") ? com.decodeFromBase64(searchParams.get("sharedSellList")) : null;
 
     const handleClickOutside = (event) => {
         if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -48,75 +47,76 @@ export default function TrackListSelector({}){
     }, [ menuOpen ]);
 
     const handleConfirm = ([ text, entry ]) => {
-        com.setUserDataActiveTrackList(text);
+        // console.log(`set active list!`, text, entry)
+        com.setUserDataActiveSellList(text);
     };
     
     return (
         <HomeSelectorComponent 
-            elemList={trackLists} 
-            sharedList={sharedTrackList} 
-            currentList={currentTrackList}
+            elemList={sellLists} 
+            sharedList={sharedSellList} 
+            currentList={currentSellList}
             obtainedComponents={obtainedComponents}
-            sharedListLabel={`Shared track list`}
-            emptyListLabel={`Track List is empty`}
-            itemFilterFunc={(item) => item.tracked == true}
-            innerListGetFunc={list => list.trackedItems}
+            sharedListLabel={`Shared sell list`}
+            emptyListLabel={`Sell List is empty`}
+            itemFilterFunc={(item) => item.sellValue != null && item.sellValue > 0 }
+            innerListGetFunc={list => { return list.sellItems }}
             onClicks={{
                 handleConfirm: handleConfirm,
                 saveShared: () => {
                     com.showDialogUi({
-                        title: "Choose the name that this Track List will have:",
-                        value: sharedTrackList.id,
+                        title: "Choose the name that this Sell List will have:",
+                        value: sharedSellList.id,
                         type: "textString",
                         ok: (ev, text) => {
                             const id = text;
-                            let newTrackList = sharedTrackList;
+                            let newSellList = sharedSellList;
 
-                            newTrackList.id = text;
+                            newSellList.id = text;
 
-                            const addTrackList = () => {
-                                com.addUserDataTrackList(newTrackList);
-                                com.setUserDataActiveTrackList(id);
+                            const addSellList = () => {
+                                com.addUserDataSellList(newSellList);
+                                com.setUserDataActiveSellList(id);
                                 router.push(window.location.href.split('?')[0]);
                             }
 
-                            if(trackLists[id] != null) { 
-                                console.warn(`track list already exists!`);
+                            if(sellLists[id] != null) { 
+                                console.warn(`sell list already exists!`);
                                 
                                 com.showDialogUi({
-                                    title: `A Track List with the name '${id}' already exists! Overwrite?`,
+                                    title: `A Sell List with the name '${id}' already exists! Overwrite?`,
                                     type: 'okcancel',
                                     ok: () => {
-                                        addTrackList();
+                                        addSellList();
                                     }
                                 })
 
                                 return; 
                             }
 
-                            addTrackList();
+                            addSellList();
                         }
                     })
                 },
                 cancelSaveShared: () => { router.push(window.location.href.split('?')[0]) },
                 editList: () => {
                     com.showDialogUi({
-                        title: `Set new name for ${currentTrackList}:`,
+                        title: `Set new name for ${currentSellList}:`,
                         type: "textString",
-                        value: currentTrackList,
+                        value: currentSellList,
                         ok: (ev, text) => {
                             const newName = text;
 
                             const renameList = () => {
-                                com.renameUserDataTrackList(currentTrackList, text);
-                                com.setUserDataActiveTrackList(text);
+                                com.renameUserDataSellList(currentSellList, text);
+                                com.setUserDataActiveSellList(text);
                             };
 
-                            if(trackLists[newName] != null) { 
-                                console.warn(`track list already exists!`);
+                            if(sellLists[newName] != null) { 
+                                console.warn(`sell list already exists!`);
                                 
                                 com.showDialogUi({
-                                    title: `A Track List with the name '${newName}' already exists! Overwrite?`,
+                                    title: `A Sell List with the name '${newName}' already exists! Overwrite?`,
                                     type: 'okcancel',
                                     ok: () => {
                                         renameList();
@@ -131,21 +131,21 @@ export default function TrackListSelector({}){
                     })
                 },
                 addList: () => {
-                    const newName = com.generateTrackListName();
-                    com.addUserDataTrackList({ id: newName, trackedItems: {} });
-                    com.setUserDataActiveTrackList(newName);
+                    const newName = com.generateSellListName();
+                    com.addUserDataSellList({ id: newName, sellItems: {} });
+                    com.setUserDataActiveSellList(newName);
                 },
                 deleteList: () => {
-                    com.removeUserDataTrackList(com.getUserDataCurrentTrackListId());
+                    com.removeUserDataSellList(com.getUserDataCurrentSellListId());
                 },
                 shareList: () => {
-                    let trackListToShare = com.cloneDict(trackLists[currentTrackList]);
-                    trackListToShare.trackedItems = com.filterDict(
-                        trackListToShare.trackedItems,
-                        ([ name, item ]) => item.tracked == true 
+                    let sellListToShare = com.cloneDict(sellLists[currentSellList]);
+                    sellListToShare.sellItems = com.filterDict(
+                        sellListToShare.sellItems,
+                        ([ name, item ]) => item.sellValue > 0 
                     )
 
-                    const urlString = `${window.location.href.split('?')[0]}?sharedTrackList=${com.encodeToBase64(trackListToShare)}`;
+                    const urlString = `${window.location.href.split('?')[0]}?sharedSellList=${com.encodeToBase64(sellListToShare)}`;
 
                     navigator.clipboard.writeText(urlString);
                     com.showNotificationUi({ label: "url copied to clipboard!", type: "success" });

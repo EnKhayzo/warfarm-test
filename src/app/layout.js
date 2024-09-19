@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(`pathname`, pathname);
+  // console.log(`pathname`, pathname);
 
   return (
     <html lang="en">

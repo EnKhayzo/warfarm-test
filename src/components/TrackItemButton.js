@@ -10,14 +10,8 @@ import useGlobalMode from '@/hooks/useGlobalMode';
 
 export default function TrackItemButton({ positionAbsolute=true, itemId }){
     const [ trackedItems, setTrackedItems ] = useTrackedItems();
-
-    const [ globalMode, setGlobalMode ] = useGlobalMode();
-    const isFarmMode = globalMode == null || globalMode === "farmMode";
     
-    const isTracked = isFarmMode ? 
-            trackedItems && trackedItems[itemId] && trackedItems[itemId].tracked 
-        : 
-            false; // TODO
+    const isTracked = trackedItems && trackedItems[itemId] && trackedItems[itemId].tracked;
 
     return (
             <button 

@@ -8,7 +8,7 @@ import ControlButton from './ControlButton';
 import * as com from "../app/common.js"
 
 import { SearchBarContext } from '../contexts/SearchBarContext';
-import TrackItemButton from './TrackItemButton';
+import ItemActionButton from './ItemActionButton';
 import ObtainedLabelButton from './ObtainedLabelButton';
 import ObtainedItemCheck from './ObtainedItemCheck';
 import ResurgenceItemIcon from './ResurgenceItemIcon';
@@ -97,7 +97,7 @@ const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCal
 
             <ResurgenceItemIcon positionAbsolute={false} itemId={id}/>
             <ObtainedItemCheck positionAbsolute={false} hollowAbsolute={false} itemId={id}/>
-            <TrackItemButton positionAbsolute={false} itemId={id}/>
+            <ItemActionButton positionAbsolute={false} itemId={id}/>
           </h2>
           <div style={{ color: '#9d9488' }}>{category}{type ? ` - ${type}` : ``}</div>
           <DucatLabel rawObj={com.getObjectFromId(id)} style={{ marginTop: '3px', justifyContent: 'flex-start' }}/>

@@ -1810,6 +1810,8 @@ export function getStaticObjectPaths(){
 }
 
 export function getObjectFromId(itemId){
+  if(itemId == null) return; // i don't warn because of spam/lag in the console window
+
   let res = null;
 
   if(!idMap[itemId]) { console.warn(`item not found in idMap!`, itemId); return null; }
@@ -2094,7 +2096,7 @@ export function objectIsCrafted(rawObj){
 export function setComponentToCrafted(componentId, crafted){
   if(componentId == null) { console.warn(`componentId is null!`, componentId); return; }
   
-  console.log(`setComponentToCrafted!`, crafted, componentId);
+  // console.log(`setComponentToCrafted!`, crafted, componentId);
 
   setUserDataExtrasCrafted(componentId, crafted);
 }
@@ -2108,7 +2110,7 @@ export function setItemToCrafted(itemId, crafted){
 export function setObjectToCrafted(rawObj, crafted){
   if(rawObj == null) { console.warn(`rawObj is null!`, rawObj); return; }
   
-  console.log(`setObjectToCrafted!`, crafted, rawObj);
+  // console.log(`setObjectToCrafted!`, crafted, rawObj);
 
   _match(rawObj.category, {
     "items": () => {
@@ -2340,6 +2342,9 @@ export function isItemResurgence(id){
 
 export function isObjectResurgence(itemId){
   const obj = getObjectFromId(itemId);
+
+  if(obj == null) return;
+
   if(!obj) { console.warn(`obj is null!`, itemId); return; }
   if(obj.category==="missions") return false;
 

@@ -221,7 +221,7 @@ export default function ItemPage({ routeId, pathObj }) {
                     >
                         { 
                             components.map((component, index) => (
-                                <ComponentAddButton component={component}/>
+                                <ComponentAddButton key={`${index}-${component.id}`} component={component}/>
                             )) 
                         }
                     </div>

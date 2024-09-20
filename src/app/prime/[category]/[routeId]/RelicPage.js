@@ -40,7 +40,7 @@ const ComponentTab = ({components}) => {
     >
           { 
             components.map((component, index) => (
-              <ComponentAddButton component={component} fullName={true} />
+              <ComponentAddButton key={`${index}-${component.id}`} component={component} fullName={true} />
             )) 
           }
         </div>

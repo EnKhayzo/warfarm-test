@@ -10,6 +10,8 @@ import useObtainedComponents from '@/hooks/useObtainedComponents';
 import ObjectStateLabel from './ObjectStateLabel';
 import useObtainedExtras from '@/hooks/useObtainedExtras';
 import LabelCheckbox from './LabelCheckbox';
+import IconButton from './IconButton';
+import CraftedButtonExtras from './CraftedButtonExtras';
 
 export default function ObtainedLabelButtonExtras({ component, isRawObj=false, width=null, showLabel=true }){
     const router = useRouter();
@@ -23,29 +25,29 @@ export default function ObtainedLabelButtonExtras({ component, isRawObj=false, w
     const isFarmed = com.objectIsFarmed(rawComponent);
     const isCrafted = com.getUserDataExtrasCrafted(rawComponent.id);
 
+    const duplicatesNum = com.getUserDataExtrasObtained(rawComponent.id);
+    const hasDuplicates = duplicatesNum > 0;
+
     return (
-            !isCrafted ?
-                <div 
-                    className='sized-content h-flex flex-center'
-                    style={{
-                        backgroundColor: 'var(--color-secondary)',
-                        borderRadius: '5px',
-                        padding: '5px',
-                        paddingLeft: '10px',
-                        paddingRight: '10px'
-                    }}
-                >
-                    <LabelCheckbox 
-                        textLabel={`Crafted?`}
-                        onClick={ev => { ev.preventDefault(); ev.stopPropagation(); }}
-                        onChange={ev => {
-                            ev.preventDefault();
-                            ev.stopPropagation();
-                            com.setUserDataExtrasCrafted(rawComponent.id, ev.target.checked);
-                        }}
-                    />
-                </div>
-            :
+            // !isCrafted && !hasDuplicates ?
+            //     <LabelCheckbox 
+            //         textLabel={`Crafted?`}
+            //         containerClassName={"flex-center"}
+            //         containerStyle={{
+            //             backgroundColor: 'var(--color-secondary)',
+            //             borderRadius: '5px',
+            //             padding: '5px',
+            //             paddingLeft: '10px',
+            //             paddingRight: '10px'
+            //         }}
+            //         onClick={ev => { ev.preventDefault(); ev.stopPropagation(); }}
+            //         onChange={ev => {
+            //             ev.preventDefault();
+            //             ev.stopPropagation();
+            //             com.setUserDataExtrasCrafted(rawComponent.id, ev.target.checked);
+            //         }}
+            //     />
+            // :
                 <div className='sized-content v-flex' style={{ alignSelf: 'stretch', gap: '5px', width: width ?? 'auto' }}>
                     {
                         componentIsAnomalous ? null:
@@ -60,7 +62,7 @@ export default function ObtainedLabelButtonExtras({ component, isRawObj=false, w
                             >
                                 +
                             </button>
-                            { !showLabel ? null: <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${com.getUserDataExtrasObtained(rawComponent.id)} duplicates`}</div> }
+                            { !showLabel ? null: <div className='sized-content h-flex flex-center' style={{ fontSize: 'small', fontStyle: 'italic', minWidth: 'fit-content' }}>{`${duplicatesNum} duplicates`}</div> }
                             <button 
                                 className='sized-content h-flex object-page-component-owned-button flex-center'
                                 onClick={(ev) => {
@@ -74,6 +76,20 @@ export default function ObtainedLabelButtonExtras({ component, isRawObj=false, w
                             >
                                 -
                             </button>
+                            {/* <IconButton
+                                label=''
+                                title={`Object is crafted? (${ isCrafted ? `yes` : `no` })`}
+                                iconClassName={`icon-default-filter`}
+                                iconStyle={{ width: '30px', height: '30px', objectFit: 'contain' }}
+                                iconUrl={ isCrafted ? `${com.getBaseEnvPath().basePath}/icons/crafted.svg` : `${com.getBaseEnvPath().basePath}/icons/crafted_hollow.svg` } 
+                                onClick={ev => {
+                                    ev.preventDefault();
+                                    ev.stopPropagation();
+
+                                    com.setUserDataExtrasCrafted(rawComponent.id, !isCrafted);
+                                }}
+                            /> */}
+                            <CraftedButtonExtras object={rawComponent} isRawObj={true}/>
                         </div>
                     }
                 </div>

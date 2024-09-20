@@ -91,5 +91,6 @@ const ContextMenu = forwardRef(({
     </div>
   );
 });
+ContextMenu.displayName = "ContextMenu";
 
 export default ContextMenu;

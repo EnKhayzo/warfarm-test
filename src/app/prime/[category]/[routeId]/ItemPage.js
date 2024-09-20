@@ -221,7 +221,7 @@ export default function ItemPage({ routeId, pathObj }) {
                     >
                         { 
                             components.map((component, index) => (
-                                <Link key={`${index}-${component.id}`}  href={com.getObjectRouteFromId(component.id)}><ComponentAddButton component={component}/></Link>
+                                <ComponentAddButton component={component}/>
                             )) 
                         }
                     </div>

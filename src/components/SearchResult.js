@@ -14,6 +14,8 @@ import ObtainedItemCheck from './ObtainedItemCheck';
 import ResurgenceItemIcon from './ResurgenceItemIcon';
 import useObtainedComponents from '@/hooks/useObtainedComponents';
 import DucatLabel from './DucatLabel';
+import useGlobalMode from '@/hooks/useGlobalMode';
+import CraftedButtonExtras from './CraftedButtonExtras';
 
 const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCallback, rawObj }) => {
   const router = useRouter();
@@ -54,6 +56,11 @@ const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCal
 
   const farmedPerc = com.objectIsFarmedPerc(com.getObjectFromId(rawObj.id));
 
+  const [ globalMode, setGlobalMode ] = useGlobalMode();
+  const isFarmMode = globalMode == null || globalMode === "farmMode";
+
+  const _rawObj = com.getObjectFromId(rawObj.id);
+
   return (
     <div
       className="sized-remaining global-search-result item-check-parent tracker-item-parent h-flex" 
@@ -90,14 +97,15 @@ const SearchResult = ({ id, category, type, vaulted, imageUrl, closeSearchBarCal
             { 
               category === "Components" && rawObj.required > 0 ? 
               <div className='sized-remaining h-flex flex-center'>
-                <ObtainedLabelButton component={rawObj} isRawObj={true}/> 
+                <ObtainedLabelButton component={_rawObj} isRawObj={true}/> 
               </div>
               : null 
             }
 
             <ResurgenceItemIcon positionAbsolute={false} itemId={id}/>
             <ObtainedItemCheck positionAbsolute={false} hollowAbsolute={false} itemId={id}/>
-            <ItemActionButton positionAbsolute={false} itemId={id}/>
+            { !(_rawObj.category==="items" && !isFarmMode) ? null: <CraftedButtonExtras object={_rawObj} isRawObj={true}/>}
+            <ItemActionButton positionAbsolute={false} itemId={id} horizontal={true}/>
           </h2>
           <div style={{ color: '#9d9488' }}>{category}{type ? ` - ${type}` : ``}</div>
           <DucatLabel rawObj={com.getObjectFromId(id)} style={{ marginTop: '3px', justifyContent: 'flex-start' }}/>

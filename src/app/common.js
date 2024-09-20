@@ -495,22 +495,38 @@ export function setUserDataExtrasObtainedSetting(componentId, name, value){
     saveUserData(userData);
     
     if(name === "owned"){
+      // adjust the sell values in case some sell list has a sell value greater than the new duplicate value
       const sellValue = getUserDataSellItemValue(componentId);
       if(sellValue > value) setUserDataSellItemValue(componentId, value);
+
+      Object.entries(getUserDataSellLists())
+        .forEach(([idList, sellListObj]) => {
+          if(sellListObj.sellItems == null) return;
+
+          const sellList = sellListObj.sellItems;
+          const sellValue = sellList[componentId] != null && sellList[componentId].sellValue != null ? sellList[componentId].sellValue : 0;
+
+          if(sellValue > value){
+            if(sellList[componentId] == null) sellList[componentId] = {};
+
+            sellList[componentId].sellValue = value;
+            setUserDataSellList(idList, sellListObj);
+          }
+        });
     }
 
     extrasObservable.set(userData.extrasObtained);
 }
 
 export function incrementUserDataExtrasObtained(componentId){
-  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned"));
+  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned") ?? 0);
   oldExtrasObtained++;
 
   setUserDataExtrasObtainedSetting(componentId, "owned", oldExtrasObtained);
 }
 
 export function decrementUserDataExtrasObtained(componentId){
-  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned"));
+  let oldExtrasObtained = Number(getUserDataExtrasSetting(componentId, "owned") ?? 0);
   oldExtrasObtained--;
   if(oldExtrasObtained < 0) oldExtrasObtained = 0;
 
@@ -2054,6 +2070,56 @@ export function setObjectToFarmed(rawObj, farmed){
   })
 }
 
+export function componentIsCrafted(componentId){
+  if(componentId == null) { console.warn(`componentId is null!`, componentId); return; }
+
+  return getUserDataExtrasCrafted(componentId);
+}
+
+export function itemIsCrafted(itemId){
+  if(itemId == null) { console.warn(`itemId is null!`, itemId); return; }
+
+  return getItemComponentIds(itemId).every(componentId => componentIsCrafted(componentId));
+}
+
+export function objectIsCrafted(rawObj){
+  if(rawObj == null) { console.warn(`rawObj is null!`, rawObj); return; }
+
+  return rawObj.category === "items" ? 
+      itemIsCrafted(rawObj.id)
+    : 
+      componentIsCrafted(rawObj.id);
+}
+
+export function setComponentToCrafted(componentId, crafted){
+  if(componentId == null) { console.warn(`componentId is null!`, componentId); return; }
+  
+  console.log(`setComponentToCrafted!`, crafted, componentId);
+
+  setUserDataExtrasCrafted(componentId, crafted);
+}
+
+export function setItemToCrafted(itemId, crafted){
+  if(itemId == null) { console.warn(`itemId is null!`, itemId); return false; }
+
+  getItemComponentIds(itemId).forEach(componentId => setComponentToCrafted(componentId, crafted));
+}
+
+export function setObjectToCrafted(rawObj, crafted){
+  if(rawObj == null) { console.warn(`rawObj is null!`, rawObj); return; }
+  
+  console.log(`setObjectToCrafted!`, crafted, rawObj);
+
+  _match(rawObj.category, {
+    "items": () => {
+      setItemToCrafted(rawObj.id, crafted);
+    },
+    "components": () => {
+      setComponentToCrafted(rawObj.id, crafted);
+    }
+  })
+}
+
 export function relicDropsComponent(rawRelic, rawComponent){
   return getRelicRewards(rawRelic).findIndex(reward => reward.rewardFullName.localeCompare(rawComponent.id) == 0) > -1;
 }
@@ -2147,7 +2213,7 @@ export function getNotificationUis() {
 
 export function getContextMenuUisRemoveListener(contextMenu){
   const removeClickListener = (ev) => {
-    if(ev.target.closest(".global-context-menu-ui") == null) {
+    if(!ev.target.classList.contains(".global-context-menu-ui") && ev.target.closest(".global-context-menu-ui") == null) {
       removeContextMenuUis(contextMenu);
       document.removeEventListener('click', removeClickListener);
     }
@@ -2184,6 +2250,15 @@ export function getContextMenuUis() {
   return contextMenuUisObservable.get();
 }
 
+
+export function getComponentRarity(rawComponent){
+  // take the rarity with the highest chance
+  const rarities = { "common": 0, "uncommon": 1, "rare": 2 };
+  return getRelicsThatDropComponent(rawComponent.id).map(relic => [ relic.relic.name, relic ])
+    .map(([ relicName, relic ]) => relic.rarity)
+    .toSorted((rarityA, rarityB) => rarities[rarityA] - rarities[rarityB])
+    [0]
+}
 
 let componentRelicRarityRelationCache = {};
 export function getComponentRarityInRelationToRelic(rawComponent, rawRelic){
@@ -2232,9 +2307,18 @@ export function generatePageTitle(pageTitle) {
   return `${pageTitle} | ${getBaseEnvPath().titleName}`;
 }
 
+export function getItemComponentIds(itemId){
+  const obj = getObjectFromId(itemId);
+  if(!obj) { console.warn(`obj is null!`, itemId); return; }
+  if(obj.components == null ) { console.warn(`obj components is null!`, itemId); return; }
+
+  return Object.keys(obj.components);
+}
+
 export function getItemComponents(itemId){
   const obj = getObjectFromId(itemId);
   if(!obj) { console.warn(`obj is null!`, itemId); return; }
+  if(obj.components == null ) { console.warn(`obj components is null!`, itemId); return; }
 
   return Object.keys(obj.components).map(componentId => getObjectFromId(componentId));
 }

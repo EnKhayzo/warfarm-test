@@ -140,7 +140,7 @@ const ComponentTab = ({ hideFarmed, trackedItems}) => {
                         }}
                     >   
                         <div className='sized-content v-flex flex-center'>
-                            <Link href={com.getObjectRouteFromId(component.id)}><ComponentAddButton width={'70px'} iconHeight={'45px'} component={component}/></Link>
+                            <ComponentAddButton width={'70px'} iconHeight={'45px'} component={component}/>
                         </div>
                         <div 
                           className='sized-content h-flex flex-center' 

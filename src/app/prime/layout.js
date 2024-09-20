@@ -554,7 +554,8 @@ export function MainLayoutComponent({children}){
               backgroundColor: 'transparent', 
               justifyContent: 'flex-end',
               gap: '10px',
-              padding: '20px'
+              padding: '20px',
+              zIndex: '1000', // to go over the search bar result pane
             }}
           >
 

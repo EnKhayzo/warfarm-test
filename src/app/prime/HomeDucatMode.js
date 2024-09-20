@@ -35,6 +35,7 @@ import useSellItems from '@/hooks/useSellItems.js';
 import useSellLists from '@/hooks/useSellLists.js';
 import SellValueLabelObject from '@/components/SellValueLabelObject.js';
 import useObtainedExtras from '@/hooks/useObtainedExtras.js';
+import ComponentAddButton from './[category]/[routeId]/subcomponents/ComponentAddButton.js';
 
 
 export function SellItemsComponent(){
@@ -88,7 +89,7 @@ export function SellItemsComponent(){
 
               return acc;
             }, 0)
-          } in Sellable Component Extras.
+          } in Sellable Component Duplicates.
         </div>
         {
           (Object.keys(sellLists).length <= 1 && com.isDictEmpty(com.filterDict(sellItems, entry => entry[1].sellValue != null && entry[1].sellValue > 0))) ? null:
@@ -167,8 +168,14 @@ export function SellItemsComponent(){
                 className='sized-content h-flex'
                 style={{ gap: '20px' }}
               >
-                <button onClick={confirmSell} title='owned values will be deducted by the sell amout specified for each component'>Confirm Sell</button>
-                <button onClick={confirmSellAndClear} title='owned values will be deducted by the sell amout specified for each component, the list will be cleared of all sell items'>Confirm Sell & Clear</button>
+                <button 
+                  className='sized-content h-flex confirm-sell-button'
+                  title='owned values will be deducted by the sell amout specified for each component'
+                  onClick={confirmSell} 
+                >
+                  Confirm Sell
+                </button>
+                {/* <button onClick={confirmSellAndClear} title='owned values will be deducted by the sell amout specified for each component, the list will be cleared of all sell items'>Confirm Sell & Clear</button> */}
               </div>
             </>
           :null
@@ -196,6 +203,50 @@ export function SellItemsComponent(){
   );
 }
 
+export function DuplicatesComponent(){
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [ obtainedExtras, setObtainedExtras ] = useObtainedExtras();
+
+  if(com.isDictEmpty(com.filterDict(obtainedExtras, ([id, extraObj]) => extraObj.owned != null && extraObj.owned > 0))) return null;
+
+  return (
+    <div
+      className='sized-content v-flex'
+      style={{
+        backgroundColor: 'var(--color-tertiary)',
+        borderRadius: '10px',
+        padding: '10px',
+        gap: '10px'
+      }}
+    >
+      <div className='sized-content h-flex flex-center' style={{ fontSize: 'x-large', fontWeight: 'bold' }}>Duplicates</div>
+      <div
+        className='sized-content h-flex flex-center'
+        style={{
+          gap: '10px',
+          flexWrap: 'wrap',
+          maxWidth: '90vw'
+        }}
+      >
+        {
+          Object.entries(obtainedExtras)
+            .filter(([ componentId, extraObj ]) => extraObj.owned != null && extraObj.owned > 0)
+            .map(([ componentId, extraObj ], index) => (
+              <ComponentAddButton 
+                key={`${index}-${componentId}`} 
+                component={com.getObjectFromId(componentId)}
+                isRawObj={true}
+                fullName={true}
+              />
+            ))
+        }
+      </div>
+    </div>
+  );
+}
+
 export default function HomeDucatMode() {
   const router = useRouter();
   const [ sellItems, setSellItems ] = useSellItems();
@@ -213,8 +264,9 @@ export default function HomeDucatMode() {
           <img className='sized-content h-flex flex-center' style={{ width: '400px' }} src={`${com.getBaseEnvPath().basePath}/icons/logo_prime.svg`}/>
         </div>
       }
-      <div className='sized-remaining v-flex flex-center' style={{ gap: '20px' }}>
+      <div className='sized-remaining v-flex flex-center' style={{ gap: '100px' }}>
         <SellItemsComponent/>
+        <DuplicatesComponent/>
       </div>
     </div>
   );

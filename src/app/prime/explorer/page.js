@@ -162,6 +162,7 @@ const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) 
                       {/* <ObjectStateLabel object={object}/> */}
                       <ItemActionButton itemId={com.getObjectId(object, category)}/>
                       <ObtainedResurgenceGroup itemId={com.getObjectId(object, category)} positionAbsolute={true}/>
+                      <ObjectStateLabel object={object} exclusiveMode={"ducatMode"}/>
                       <DucatLabel rawObj={object}/>
                     </Link>
                   )) 

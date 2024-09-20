@@ -596,7 +596,7 @@ html * {
 
 
 .obtained-extra-component {
-  gap: 5px;
+  gap: 2px;
   font-style: italic;
   font-size: small;
 }
@@ -990,4 +990,10 @@ input:checked + .slider:before {
 
 .global-context-menu-ui {
   background-color: var(--color-tertiary);
+}
+
+.confirm-sell-button {
+  background-color: var(--color-component-rare);
+  border-radius: 10px;
+  padding: 10px;
 }

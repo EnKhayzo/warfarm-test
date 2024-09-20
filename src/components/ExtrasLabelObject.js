@@ -15,8 +15,16 @@ export default function ExtrasLabelObject({ object, className, style, collapseWh
     const [ obtainedExtras, setObtainedExtras ] = useObtainedExtras();
     
     let extras = null;
-    if(object.category === "components"){
-        extras = `${obtainedExtras && obtainedExtras[object.id] && obtainedExtras[object.id].owned ? obtainedExtras[object.id].owned : '0'} duplicates`
+    if(object.category === "items"){
+        const extrasObtained = com.getItemComponentIds(object.id).reduce((acc, componentId) =>{
+            acc += com.getUserDataExtrasObtained(componentId);
+            return acc;
+        }, 0);
+        extras = `${extrasObtained} duplicates`;
+    }
+    else if(object.category === "components"){
+        const extrasObtained = com.getUserDataExtrasObtained(object.id);
+        extras = `${extrasObtained} duplicates`;
     }
     else extras = null;
 

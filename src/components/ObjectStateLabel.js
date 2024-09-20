@@ -11,16 +11,19 @@ import ObtainedLabelObject from './ObtainedLabelObject';
 import ExtrasLabelObject from './ExtrasLabelObject';
 import useGlobalMode from '@/hooks/useGlobalMode';
 
-export default function ObjectStateLabel({ object, className, style, collapseWhenNull=true, labelPrefix=null }){
+export default function ObjectStateLabel({ object, className, style, exclusiveMode=null, collapseWhenNull=true, labelPrefix=null }){
     const router = useRouter();
 
     const [ globalMode, setGlobalMode ] = useGlobalMode();
     const isFarmMode = globalMode == null || globalMode === "farmMode";
 
+    const isCorrectExclusiveMode = exclusiveMode == null || globalMode === exclusiveMode;
+    // const isCorrectExclusiveMode = true;
+
     return (
         isFarmMode ?
-            <ObtainedLabelObject object={object} className={className} style={style} collapseWhenNull={collapseWhenNull} labelPrefix={labelPrefix}/>
+            (!isCorrectExclusiveMode ? null: <ObtainedLabelObject object={object} className={className} style={style} collapseWhenNull={collapseWhenNull} labelPrefix={labelPrefix}/>)
         :
-            <ExtrasLabelObject object={object} className={className} style={style} collapseWhenNull={collapseWhenNull} labelPrefix={labelPrefix}/>
+            (!isCorrectExclusiveMode ? null: <ExtrasLabelObject object={object} className={className} style={style} collapseWhenNull={collapseWhenNull} labelPrefix={labelPrefix}/>)
        );
 }

@@ -161,6 +161,10 @@ export function setUserDataComponentObtainedSetting(componentId, name, value){
     
     obtainedObservable.set(userData.componentsObtained);
 
+    // keep in mind: the user can set a farmed object to not farmed, 
+    // but if the crafted setting is true it will remain as is
+    // implement a system that automatically sets the crafted to false in such a case?
+
     // if(name === "obtained"){
     //   const oldValue = oldObj.name ?? null;
     //   if(oldValue != null){

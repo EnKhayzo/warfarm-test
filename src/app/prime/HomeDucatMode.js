@@ -170,12 +170,12 @@ export function SellItemsComponent(){
               >
                 <button 
                   className='sized-content h-flex confirm-sell-button'
-                  title='owned values will be deducted by the sell amout specified for each component'
+                  title='Owned values will be deducted by the sell amout specified for each component'
                   onClick={confirmSell} 
                 >
                   Confirm Sell
                 </button>
-                {/* <button onClick={confirmSellAndClear} title='owned values will be deducted by the sell amout specified for each component, the list will be cleared of all sell items'>Confirm Sell & Clear</button> */}
+                {/* <button onClick={confirmSellAndClear} title='Owned values will be deducted by the sell amout specified for each component, the list will be cleared of all sell items'>Confirm Sell & Clear</button> */}
               </div>
             </>
           :null
@@ -278,15 +278,15 @@ export default function HomeDucatMode() {
 
   return (
     <div className='sized-remaining v-flex' style={{ justifyContent: 'center', gap: '0px' }}>
-      {
+      {/* {
         !noSellItems ? null :
         <div className='sized-content h-flex flex-center' style={{ padding: '10px' }}>
           <img className='sized-content h-flex flex-center' style={{ width: '400px' }} src={`${com.getBaseEnvPath().basePath}/icons/logo_prime.svg`}/>
         </div>
-      }
-      <div className='sized-remaining v-flex flex-center' style={{ gap: '50px' }}>
+      } */}
+      {/* <div className='sized-remaining v-flex flex-center' style={{ gap: '50px' }}>
         <div>Baro will arrive in</div>
-      </div>
+      </div> */}
       <div className='sized-remaining v-flex flex-center' style={{ gap: '100px' }}>
         <SellItemsComponent/>
         <DuplicatesComponent/>

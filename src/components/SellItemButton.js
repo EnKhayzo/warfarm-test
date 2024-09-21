@@ -111,6 +111,7 @@ export default function SellItemButton({ positionAbsolute=true, itemId }){
                                                             componentIsAnomalous ? null:
                                                             <div className='sized-content h-flex flex-center' style={{ gap: '5px' }}>
                                                                 <div 
+                                                                    title='Increase sell amount'
                                                                     className='sized-content h-flex object-page-component-owned-button flex-center'
                                                                     style={{ cursor: 'pointer' }}
                                                                     onClick={(ev) => {
@@ -124,6 +125,7 @@ export default function SellItemButton({ positionAbsolute=true, itemId }){
                                                                     +
                                                                 </div>
                                                                 <div 
+                                                                    title='Decrease sell amount'
                                                                     className='sized-content h-flex object-page-component-owned-button flex-center'
                                                                     style={{ cursor: 'pointer' }}
                                                                     onClick={(ev) => {

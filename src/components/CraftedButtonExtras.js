@@ -23,7 +23,7 @@ export default function CraftedButtonExtras({ object, isRawObj=false }){
     return (
         <IconButton
             label=''
-            title={`Object is crafted? (${ isCrafted ? `yes` : `no` })`}
+            title={`Set object to${isCrafted ? ` not` : ``} crafted`}
             iconClassName={`icon-default-filter`}
             iconStyle={{ width: '30px', height: '30px', objectFit: 'contain' }}
             iconUrl={ isCrafted ? `${com.getBaseEnvPath().basePath}/icons/crafted.svg` : `${com.getBaseEnvPath().basePath}/icons/crafted_hollow.svg` } 

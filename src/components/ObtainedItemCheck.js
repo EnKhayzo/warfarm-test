@@ -52,6 +52,7 @@ export default function ObtainedItemCheck({ positionAbsolute=true, hollowAbsolut
                         :null
                     }
                     <img 
+                        title={`Item is${isObtainedPerc <= 0 ? ` not` : isObtainedPerc < 1 ? ` partially` : ``} farmed`}
                         src={isObtainedPerc < 1 ? `${com.getBaseEnvPath().basePath}/icons/success_hollow.svg` : `${com.getBaseEnvPath().basePath}/icons/success.svg`} 
                         className={`sized-content icon-default-filter flex-center obtained-check-hollow`}
                         onClick={(ev) => { 

@@ -22,6 +22,7 @@ export default function SellItemButton({ positionAbsolute=true, itemId }){
 
 
     const rawObj = com.getObjectFromId(itemId);
+    if(rawObj.category !== "items" && rawObj.category !== "components") return null;
 
     const sellValue = rawObj.category === "items" ? 
         com.getItemComponentIds(itemId)

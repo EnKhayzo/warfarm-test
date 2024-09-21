@@ -15,7 +15,7 @@ import ObjectStateLabel from '@/components/ObjectStateLabel';
 import ObtainedLabelObject from '@/components/ObtainedLabelObject';
 import ObtainedLabelButton from '@/components/ObtainedLabelButton';
 
-export default function ComponentAddButton({ component, showCorrespondingItem=false, showButtons=true, isRawObj=false, fullName=false, iconHeight='75px', width=null }){
+export default function ComponentAddButton({ component, showCorrespondingItem=false, showButtons=true, isRawObj=false, fullName=false, iconHeight='75px', width=null, className, style }){
     const router = useRouter();
 
     const [ obtainedComponents, setObtainedComponents ] = useObtainedComponents();
@@ -32,7 +32,7 @@ export default function ComponentAddButton({ component, showCorrespondingItem=fa
     const componentIsAnomalous = component.required <= 0;
 
     return (
-        <div className='sized-content v-flex' style={{ alignSelf: 'stretch', gap: '5px' }}>
+        <div className={`sized-content v-flex${ className ? ` ${className}` : `` }`} style={com.shallowMerge({ alignSelf: 'stretch', gap: '5px' }, style)}>
             <Link 
                 href={route}
                 // onClick={() => router.push(route)}

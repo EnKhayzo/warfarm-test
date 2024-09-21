@@ -12,20 +12,26 @@ import useObtainedExtras from '@/hooks/useObtainedExtras';
 import LabelCheckbox from './LabelCheckbox';
 import IconButton from './IconButton';
 
-export default function CraftedButtonExtras({ object, isRawObj=false }){
+export default function CraftedButtonExtras({positionAbsolute=false, object, isRawObj=false, onlyShowOnHover=false, iconStyle }){
     const router = useRouter();
 
+    const [ obtainedComponents, setObtainedComponents ] = useObtainedComponents();
     const [ obtainedExtras, setObtainedExtras ] = useObtainedExtras();
-    
+
     const rawObject = (isRawObj ? object : object.rawObj);
+    if(rawObject != null && rawObject.category !== "items" && rawObject.category !== "components") return null;
+
+    const isFarmed = com.objectIsFarmed(object);
+    if(!isFarmed) return null;
+    
     const isCrafted = com.objectIsCrafted(rawObject);
 
     return (
         <IconButton
             label=''
             title={`Set object to${isCrafted ? ` not` : ``} crafted`}
-            iconClassName={`icon-default-filter`}
-            iconStyle={{ width: '30px', height: '30px', objectFit: 'contain' }}
+            iconClassName={`icon-default-filter${onlyShowOnHover && !isCrafted ? ` icon-default-show-hover` : ``}${positionAbsolute ? 'absolute' : ''}`}
+            iconStyle={com.shallowMerge({ width: '30px', height: '30px', objectFit: 'contain' }, iconStyle)}
             iconUrl={ isCrafted ? `${com.getBaseEnvPath().basePath}/icons/crafted.svg` : `${com.getBaseEnvPath().basePath}/icons/crafted_hollow.svg` } 
             onClick={ev => {
                 ev.preventDefault();

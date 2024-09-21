@@ -91,7 +91,7 @@ export default function ObtainedLabelButtonExtras({ component, isRawObj=false, w
                                     com.setUserDataExtrasCrafted(rawComponent.id, !isCrafted);
                                 }}
                             /> */}
-                            <CraftedButtonExtras object={rawComponent} isRawObj={true}/>
+                            {/* <CraftedButtonExtras object={rawComponent} isRawObj={true}/> */}
                         </div>
                     }
                 </div>

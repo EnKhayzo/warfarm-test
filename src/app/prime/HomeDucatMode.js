@@ -235,15 +235,20 @@ export function DuplicatesComponent(){
         {
           Object.entries(obtainedExtras)
             .filter(([ componentId, extraObj ]) => extraObj.owned != null && extraObj.owned > 0)
+            .toSorted(([idA, a ], [ idB, b ]) => 
+              b.owned - a.owned 
+              || 
+              idA.localeCompare(idB)
+            )
             .map(([ componentId, extraObj ], index) => { const component = com.getObjectFromId(componentId); return (
-              <div className='sized-content v-flex flex-center' style={{ gap: '5px' }}>
+              <div key={`${index}-${componentId}`}  className='sized-content v-flex flex-center' style={{ gap: '5px' }}>
                 <ComponentAddButton 
-                  key={`${index}-${componentId}`} 
                   component={com.getObjectFromId(componentId)}
                   isRawObj={true}
                   fullName={true}
                   showButtons={false}
                   showCorrespondingItem={true}
+                  style={{ minWidth: '205px' }}
                 />
                 <SellItemButtons component={component} showLabel={true} alwaysShowLabel={true}/>
               </div>

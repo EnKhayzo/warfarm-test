@@ -24,7 +24,7 @@ export default function SellItemButtons({ component, showLabel=false, alwaysShow
 
     return (
         componentIsAnomalous ? null:
-        !hasDuplicates ? <div className='sized-content h-flex flex-center' style={{ maxWidth: '80px', textAlign: 'center', fontSize: 'x-small', fontStyle: 'italic' }}>You don't have duplicates for this component</div> :
+        !hasDuplicates ? <div className='sized-content h-flex flex-center' style={{ maxWidth: '80px', textAlign: 'center', fontSize: 'x-small', fontStyle: 'italic' }}>You don&apos;t have duplicates for this component</div> :
         <div className='sized-content h-flex flex-center' style={{ gap: '5px' }}>
             <div 
                 title='Increase sell amount'

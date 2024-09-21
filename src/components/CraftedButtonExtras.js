@@ -19,7 +19,7 @@ export default function CraftedButtonExtras({positionAbsolute=false, object, isR
     const [ obtainedExtras, setObtainedExtras ] = useObtainedExtras();
 
     const rawObject = (isRawObj ? object : object.rawObj);
-    if(rawObject == null) return;
+    if(rawObject == null) return null;
     if(rawObject.category !== "items" && rawObject.category !== "components") return null;
 
     const isFarmed = com.objectIsFarmed(object);

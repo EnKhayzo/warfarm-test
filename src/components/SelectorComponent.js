@@ -63,6 +63,7 @@ export default function SelectorComponent({ options, onConfirm }){
                         overflow: 'hidden',
                         position: 'absolute', 
                         top: '50px',
+                        zIndex: '1000'
                     }}
                 >
                     <div 

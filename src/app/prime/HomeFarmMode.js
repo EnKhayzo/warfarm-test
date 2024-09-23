@@ -262,7 +262,7 @@ function VoidFissuresComponent(){
         // Parse the response as JSON
         const data = await response.json();
         
-        console.log(`set world state!`, data);
+        // console.log(`set world state!`, data);
 
         // Update state with the fetched data
         setWorldState(data);
@@ -283,7 +283,7 @@ function VoidFissuresComponent(){
         let timeToWait = targetDate-Date.now();
         if(timeToWait <= 0) timeToWait = 20*1000; // 20 seconds
 
-        console.log(`time until refetch`, com.getTimestampAsDurationString(timeToWait));
+        // console.log(`time until refetch`, com.getTimestampAsDurationString(timeToWait));
         setTimeout(refetchData, timeToWait);
       } catch (error) {
         console.error('Error fetching data:', error);

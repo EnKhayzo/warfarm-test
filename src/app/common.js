@@ -2541,5 +2541,5 @@ export function getAPINodeObj(nodeId){
 }
 
 export function getAPINodeName(nodeId){
-  getAPINodeObj(nodeId).id;
+  return getAPINodeObj(nodeId).id;
 }

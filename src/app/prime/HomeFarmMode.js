@@ -336,7 +336,10 @@ function VoidFissuresComponent(){
 
   return (
       worldState == null ? null:
-      <Collapsible className='sized-content v-flex flex-center void-fissures-collapsible' title="Available Void Fissures">
+      <Collapsible 
+        className='sized-content v-flex flex-center void-fissures-collapsible' 
+        title={<span style={{ fontWeight: 'bold', fontSize: 'large' }}>Available Void Fissures</span>}
+      >
           <SelectorComponent
             options={{
               "Relic Type": { value: "relicType", defaultOption: true },

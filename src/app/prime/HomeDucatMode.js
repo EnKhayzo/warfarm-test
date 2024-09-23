@@ -329,12 +329,13 @@ function BaroComponent(){
       if(expiryDate != null) timeUntilBaro = expiryDate - Date.now();
 
       baroLocation = com.getAPINodeName(baroState.Node);
+      console.log(`baro locaion`, baroLocation,baroState.Node);
     }
   }
 
   return (
     worldState == null || timeUntilBaro == null ? null:
-      <div className='sized-remaining v-flex flex-center' style={{ gap: '50px' }}>
+      <div className='sized-remaining v-flex flex-center' style={{ gap: '50px', marginBottom: '40px' }}>
         <div className='sized-content h-flex flex-center' style={{ whiteSpace: 'pre', fontSize: 'x-large' }}>Baro Ki&apos;Teer { timeSinceStartBaro < 0 ? <>will arrive{ baroLocation != null ? <> at <span style={{ fontWeight: 'bold' }}>{baroLocation}</span></> : `` }</> : <>has arrived{ baroLocation != null ? <> at <span style={{ fontWeight: 'bold' }}>{baroLocation}</span></> : `` } and will go away</>} in <span className='sized-content h-flex flex-center' style={{ fontWeight: 'bold' }}>{com.getTimestampAsDurationString(timeUntilBaro)}</span></div>
       </div>
   );

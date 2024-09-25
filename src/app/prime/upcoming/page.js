@@ -25,9 +25,6 @@ export default function AboutPage() {
       <div className='sized-content v-flex flex-center' style={{ whiteSpace: 'pre', gap: '5px' }}>
         <div>-Relics owned system?</div>
         <div>-Possibly more sorting options for relic/mission tabs</div>
-        <div>-Layout fix for different screen sizes</div>
-        <div>-Hopefully fix the layout for mobile😂</div>
-        <div>-Fix performance issues (it&apos;s slllooowww when you have a lot of objects)</div>
       </div>
       <div className='sized-content v-flex flex-center' style={{ whiteSpace: 'pre', gap: '5px', fontStyle: 'italic' }}>
         <div>And many more little QoL fixes and stuff over time :)</div>

@@ -36,7 +36,9 @@ export default function RootLayout({ children }) {
         />
       </Head>
       <body className={`${inter.className} v-flex`} style={{ backgroundColor: '#151718' }}> {/* style is to mitigate FOUC */}
-        <MyLayout children={children}/>
+        <MyLayout>
+          {children}
+        </MyLayout>
       </body>
     </html>
   );

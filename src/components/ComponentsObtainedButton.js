@@ -61,7 +61,7 @@ export default function ComponentsObtainedButton({ positionAbsolute=true, itemId
                             >
                                 {
                                     components.map((component, index) => (
-                                        <ComponentAddButton component={component} isRawObj={true} forceMode={"farmMode"}/>
+                                        <ComponentAddButton key={`${index}-${component.id}`} component={component} isRawObj={true} forceMode={"farmMode"}/>
                                     ))
                                 }
                             </div>

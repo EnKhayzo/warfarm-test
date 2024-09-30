@@ -2691,3 +2691,17 @@ export function getObjectComponents(rawObj){
       getComponentsDroppedByRelic(rawObj)
     : null;
 }
+
+export function getTotalRelicsOwnedMap(){
+  const refinements = getRelicRefinements();
+  return Object.fromEntries(
+    Object.entries(getUserDataRelicsOwned())
+      .map(([ id, relicObj ]) => [ 
+        id, 
+        refinements.reduce((acc, refinement) => {
+          acc += relicObj[refinement] ?? 0;
+          return acc;
+        }, 0) 
+    ])
+  );
+}

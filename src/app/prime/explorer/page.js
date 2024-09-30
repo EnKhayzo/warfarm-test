@@ -245,18 +245,7 @@ const ObjectSectionBuilder = ({ category }) => {
     "Relics": () => {
       const allRelics = com.getAllRelics(); 
 
-      const refinemets = com.getRelicRefinements();
-      const totalMap = Object.fromEntries(
-        Object.entries(com.getUserDataRelicsOwned())
-          .map(([ id, relicObj ]) => [ 
-            id, 
-            refinemets.reduce((acc, refinement) => {
-              acc += relicObj[refinement] ?? 0;
-              return acc;
-            }, 0) 
-        ])
-      );
-      
+      const totalMap = com.getTotalRelicsOwnedMap();
 
       res = (
         <ObjectSection 
@@ -270,6 +259,8 @@ const ObjectSectionBuilder = ({ category }) => {
                           (a.vaulted-b.vaulted)
                           ||
                           (relicTypePriorities[com.getRelicType(a.name)]-relicTypePriorities[com.getRelicType(b.name)])
+                          ||
+                          ((com.isRelicResurgence(b.id) ? 1 : -1) - (com.isRelicResurgence(a.id) ? 1 : -1))
                           ||
                           ((totalMap[b.id]??0)-(totalMap[a.id]??0))
                           ||

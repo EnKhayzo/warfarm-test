@@ -37,6 +37,7 @@ import useMissionPriorities from '@/hooks/useMissionPriorities.js';
 import DucatLabel from '@/components/DucatLabel';
 import LazyLoadVisibleWrapper from '@/components/LazyLoadVisibleWrapper';
 import useGlobalMode from '@/hooks/useGlobalMode';
+import RelicsOwnedLabelAddButton from '@/components/RelicsOwnedLabelAddButton';
 
 
 const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) => {
@@ -174,7 +175,7 @@ const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) 
                       >
                         <div className='sized-content h-flex flex-center' style={{ objectFit: 'contain', height: '90px' }}><img  className='sized-content h-flex main-view-item-image flex-center' style={{ height: '100px', width: '100px', objectFit: 'contain' }} src={com.getObjectIcon(object)}/></div>
                         <div className='sized-content main-view-item-label h-flex flex-center' style={{ textAlign: 'center' }}>{ labelFunc(object) }</div>
-                        {/* <ObjectStateLabel object={object}/> */}
+                        {/* { object.category !== "relics" ? null: <RelicsOwnedLabelAddButton relic={object}/> } */}
                         <ItemActionButton itemId={com.getObjectId(object, category)}/>
                         <ObtainedResurgenceGroup itemId={com.getObjectId(object, category)} positionAbsolute={true}/>
                         <ObjectStateLabel object={object} exclusiveMode={"ducatMode"}/>
@@ -244,6 +245,19 @@ const ObjectSectionBuilder = ({ category }) => {
     "Relics": () => {
       const allRelics = com.getAllRelics(); 
 
+      const refinemets = com.getRelicRefinements();
+      const totalMap = Object.fromEntries(
+        Object.entries(com.getUserDataRelicsOwned())
+          .map(([ id, relicObj ]) => [ 
+            id, 
+            refinemets.reduce((acc, refinement) => {
+              acc += relicObj[refinement] ?? 0;
+              return acc;
+            }, 0) 
+        ])
+      );
+      
+
       res = (
         <ObjectSection 
           category="Relics"
@@ -256,6 +270,8 @@ const ObjectSectionBuilder = ({ category }) => {
                           (a.vaulted-b.vaulted)
                           ||
                           (relicTypePriorities[com.getRelicType(a.name)]-relicTypePriorities[com.getRelicType(b.name)])
+                          ||
+                          ((totalMap[b.id]??0)-(totalMap[a.id]??0))
                           ||
                           (a.name.localeCompare(b.name))
                         )

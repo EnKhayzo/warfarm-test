@@ -73,15 +73,14 @@ export default function RelicsOwnedButton({ positionAbsolute=true, itemId, showI
                         });
                     }}
                 >
-                            <img 
-                                src={`${com.getBaseEnvPath().basePath}/icons/owned.svg`} 
-                                className={`sized-content ${ relicNum > 0 ? `eye-icon` : `sell-button-icon` } icon-default-filter flex-center`}
-                                style={com.shallowMerge({
+                    <img 
+                        src={`${com.getBaseEnvPath().basePath}/icons/owned.svg`} 
+                        className={`sized-content ${ relicNum > 0 ? `eye-icon` : `sell-button-icon` } icon-default-filter flex-center`}
+                        style={com.shallowMerge({
 
-                                }, iconStyle)}
-                            />
-                            { !(relicNum > 0) ? null: <span className='sized-content h-flex flex-center' style={{ marginBottom: '2px', fontSize: 'small', fontStyle: 'italic' }}>{relicNum}</span> }
-                        
+                        }, iconStyle)}
+                    />
+                    { !(relicNum > 0) ? null: <span className='sized-content h-flex flex-center' style={{ marginBottom: '2px', fontSize: 'small', fontStyle: 'italic' }}>{relicNum}</span> }
                 </button>
             </>
     );

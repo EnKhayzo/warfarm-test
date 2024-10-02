@@ -38,6 +38,7 @@ import DucatLabel from '@/components/DucatLabel';
 import LazyLoadVisibleWrapper from '@/components/LazyLoadVisibleWrapper';
 import useGlobalMode from '@/hooks/useGlobalMode';
 import RelicsOwnedLabelAddButton from '@/components/RelicsOwnedLabelAddButton';
+import MobileMoreOptionsButton from '@/components/MobileMoreOptionsButton';
 
 
 const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) => {
@@ -180,6 +181,7 @@ const ObjectSection = ({ objects, imageFunc, labelFunc, titleLabel, category }) 
                         <ObtainedResurgenceGroup itemId={com.getObjectId(object, category)} positionAbsolute={true}/>
                         <ObjectStateLabel object={object} exclusiveMode={"ducatMode"}/>
                         <DucatLabel rawObj={object}/>
+                        <MobileMoreOptionsButton itemId={object.id}/>
                       </Link>
                     </LazyLoadVisibleWrapper>
                   )) 

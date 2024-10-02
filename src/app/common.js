@@ -1052,6 +1052,16 @@ export function getRelicsThatDropComponent(componentId){
       : [];
 }
 
+export function getMissionRelics(mission) {
+  if(!mission.rewards) { console.warn(`mission has no relicRewards!`, mission); return; }
+
+  return Object.fromEntries(
+    Object.entries(mission.rewards)
+      .map(([ relicIdName, relicObj ]) => { const res = [ relicIdName.replace(" Relic", ""), { percObj: relicObj, relic: relicIdName.replace(" Relic", "") in relics ? relics[relicIdName.replace(" Relic", "")] : null } ]; console.log(`returning`, res); return res})
+      .filter(([ relicId, relicEntry ]) => relicEntry.relic != null)
+  );
+}
+
 export function getMissionRelicRewards(mission){
     if(!mission.rewards) { console.warn(`mission has no relicRewards!`, mission); return; }
 

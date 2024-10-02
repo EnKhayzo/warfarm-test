@@ -56,11 +56,7 @@ const FarmingSheetTab = ({ mission, hideFarmed }) => {
   
     const totalMap = com.getTotalRelicsOwnedMap();
 
-    console.log(`mission!`, mission);
-
     const missionRelics = com.getMissionRelics(mission);
-
-    console.log(`mision relics!`, missionRelics);
   
     return (
       <div

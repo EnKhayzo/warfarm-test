@@ -20,7 +20,7 @@ export default function DuplicateItemButton({ positionAbsolute=true, itemId, sho
     const [ obtainedExtras, setObtainedExtras ] = useObtainedExtras();
     
     const rawObj = com.getObjectFromId(itemId);
-    if(rawObj.category !== "items" && rawObj.category !== "components") return null;
+    if(rawObj == null || (rawObj.category !== "items" && rawObj.category !== "components")) return null;
 
     const hasDuplicates = com.getUserDataExtrasObtained(itemId) > 0;
 

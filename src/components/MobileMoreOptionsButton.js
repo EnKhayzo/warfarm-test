@@ -20,6 +20,9 @@ import RelicsOwnedLabelAddButton from './RelicsOwnedLabelAddButton';
 import useObtainedComponents from '@/hooks/useObtainedComponents';
 import ComponentsObtainedButton from './ComponentsObtainedButton';
 import RelicsOwnedButton from './RelicsOwnedButton';
+import TrackItemButton from './TrackItemButton';
+import SellItemButton from './SellItemButton';
+import DuplicateItemButton from './DuplicateItemButton';
 
 export default function MobileMoreOptionsButton({ positionAbsolute=true, itemId }){
     return (
@@ -40,19 +43,23 @@ export default function MobileMoreOptionsButton({ positionAbsolute=true, itemId 
                         position: { top: `${targetBB.top + 10}px`, left: `${targetBB.left + 10}px` },
                         children: (props) => (
                             <div
-                                className='sized-content v-flex flex-center'
+                                className='sized-content v-flex'
                                 style={{ 
                                     cursor: 'default', 
                                     borderRadius: '10px', 
                                     padding: '10px', 
                                     alignSelf: 'stretch', 
-                                    gap: '20px' 
+                                    gap: '20px',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'flex-start'
                                 }}
                                 onClick={(ev) => { ev.stopPropagation(); ev.preventDefault(); }}
                             >
-                                <ItemActionButton positionAbsolute={false} itemId={itemId}/>
-                                <ComponentsObtainedButton positionAbsolute={false} itemId={itemId}/>
-                                <RelicsOwnedButton positionAbsolute={false} itemId={itemId} showIfHas={false}/>
+                                <TrackItemButton itemId={itemId} positionAbsolute={false} showLabel={true}/>
+                                <ComponentsObtainedButton positionAbsolute={false} itemId={itemId} showLabel={true}/>
+                                <DuplicateItemButton itemId={itemId} positionAbsolute={false} showLabel={true}/>
+                                <SellItemButton itemId={itemId} positionAbsolute={false} showLabel={true}/>
+                                <RelicsOwnedButton positionAbsolute={false} itemId={itemId} showIfHas={false} showLabel={true}/>
                             </div>
                         )
                     });

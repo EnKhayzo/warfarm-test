@@ -176,7 +176,7 @@ const FarmingSheetTab = ({ mission, hideFarmed }) => {
                                                     // onClick={() => router.push(relic.route)}
                                                     className={`sized-content item-page-component-container tracker-item-parent h-flex flex-center${` ${relic.rarity}` ?? ''}`}
                                                     style={{
-                                                    width: '200px',
+                                                    width: '220px',
                                                     gap: '5px',
                                                     opacity: relic.vaulted ? '50%' : '100%'
                                                     }}

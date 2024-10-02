@@ -1167,6 +1167,8 @@ export function getInitializing(){
 }
 
 
+let datasetDates = null;
+
 let items = null;
 let relics = null;
 let missions = null;
@@ -1191,6 +1193,8 @@ export function getInitialized() { return initialized; }
 export async function initialize(local=false) {
     if(initialized) return;
  
+    datasetDates = (await import(`../../public/data/dataset_dates.json`)).default;
+
     items = (await import(`../../public/data/items.json`)).default;
     components = (await import(`../../public/data/components.json`)).default;
     relics = (await import(`../../public/data/relics.json`)).default;
@@ -2611,7 +2615,7 @@ export function getBaseEnvPath() {
 export function getDucatValueComponent(rawObj){
   if(rawObj == null){ console.warn(`rawObj is null!`, rawObj); return 0; }
 
-  if(!("ducats" in rawObj)) return -1;
+  if(!("ducats" in rawObj)) return 0;
 
   return rawObj.ducats;
 }
@@ -2714,4 +2718,13 @@ export function getTotalRelicsOwnedMap(){
         }, 0) 
     ])
   );
+}
+
+export function getDatasetDates(){
+  return datasetDates ?? {};
+}
+
+export function getDatasetLastDropTableUpdate(){
+  if(datasetDates == null) { console.warn(`datasetDates is nul!`); return "?"; }
+  return datasetDates.last_update ?? "?";
 }

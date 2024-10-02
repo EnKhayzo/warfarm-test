@@ -174,7 +174,7 @@ export function SellItemsComponent(){
               >
                 <button 
                   className='sized-content h-flex confirm-sell-button'
-                  title='Owned values will be deducted by the sell amout specified for each component'
+                  title='Sell amounts will be deducted from the Duplicate number for each component, and the current Sell List cleared'
                   onClick={confirmSell} 
                 >
                   Confirm Sell
